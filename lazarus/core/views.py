@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 import pyrebase 
 
 config = {
@@ -16,13 +17,32 @@ firebase= pyrebase.initialize_app(config)
 authe= firebase.auth()
 database= firebase.database()
 
-# Create your views here.
+# Vistas paginas
 def paginator(request):
     #wea= database.child('users').child('users').get().val()
-    return render(request, 'pag.html')
+    return render(request, 'ingreso.html')
+
+def paginator2(request):
+    return render(request, 'CrearUsuario.html')
 
 def paginatorfail(request):
     return render(request, 'login.html')
+
+# Creacion de funciones 
+
+def usercreate(request):
+    nombre = request.POST.get('nombre')
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    user = authe.create_user_with_email_and_password(nombre,email,password)
+    uid = user['localid']
+
+    
+
+    
+    return render(request,"oficial.html")
+    
+
 
 def ingresar(request):
     email = request.POST.get('email')
@@ -31,8 +51,15 @@ def ingresar(request):
       user = authe.sign_in_with_email_and_password(email,password)
     except:
        message ="ta malo con lo que existe"
-       return render(request, "oficial.html", {"correo": email})
+       return render(request, "ingreso.html", {"correo": email})
     
     return render(request,"oficial.html")
 
 
+
+def salir(request):
+    try:
+        del request.session['uid'] 
+    except KeyError:
+        pass
+    return render(request,"ingreso.html")

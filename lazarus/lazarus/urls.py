@@ -22,5 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.paginator),
     path('fail/', views.paginatorfail),
-    path('ingresar/', views.ingresar)
+    path('ingresar/', views.ingresar),
+    path('crear/', views.paginator2),
+    path('salir/', views.salir, name='volverlogin'),
 ]
