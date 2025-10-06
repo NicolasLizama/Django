@@ -20,5 +20,7 @@ from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.paginator)
+    path('', views.paginator),
+    path('fail/', views.paginatorfail),
+    path('ingresar/', views.ingresar)
 ]
