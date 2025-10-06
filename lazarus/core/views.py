@@ -35,13 +35,16 @@ def usercreate(request):
     email = request.POST.get('email')
     password = request.POST.get('password')
 
-    user = authe.create_user_with_email_and_password(email,password)
+    
 
     #uid = user['localid']
+    try:
+        user = authe.create_user_with_email_and_password(email,password)
+    except:
+        return redirect('/crear')
+    # #lleva a la pagina url normal con nada     
+    return redirect('/')
 
-    
-    return render(request, 'ingreso.html')
-    
 
 
 def ingresar(request):
@@ -51,7 +54,7 @@ def ingresar(request):
       user = authe.sign_in_with_email_and_password(email,password)
     except:
        message ="ta malo con lo que existe"
-       return render(request, "ingreso.html", {"correo": email})
+       return redirect('/') 
     
     return render(request,"oficial.html")
 
@@ -62,4 +65,4 @@ def salir(request):
         del request.session['uid'] 
     except KeyError:
         pass
-    return render(request,"ingreso.html")
+    return redirect('/')
