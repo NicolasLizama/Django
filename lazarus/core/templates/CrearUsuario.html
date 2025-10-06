@@ -6,9 +6,13 @@
     <title>Crear usuario</title>
   </head>
   <body>
-    <form action="/crearusuario/" method="POST">
+    <form action="/usercreate/" method="POST">
         {% csrf_token %}
         <h1 class="titulo">Ingresa tus datos</h1>
+
+         <label for="nombre">
+            <input name="nombre" placeholder="nombre" type="text" id="nombre" required>
+        </label>
 
         <label for="email">
             <input name="email" placeholder="Correo" type="text" id="email" required>
@@ -18,8 +22,8 @@
             <input name="password" placeholder="Contraseña" type="password" id="password" required>
         </label>
 
-        <a href="#" class="link"> usa el link </a>
-        <button type="submit" id="button">Login</button>
+        <a href="#" class="link"> usa el link para algo a futuro </a>
+        <button type="submit" id="button">Crear</button>
     </form>
   </body>
 </html>

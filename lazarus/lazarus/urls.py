@@ -24,5 +24,6 @@ urlpatterns = [
     path('fail/', views.paginatorfail),
     path('ingresar/', views.ingresar),
     path('crear/', views.paginator2),
+    path('usercreate/', views.usercreate),
     path('salir/', views.salir, name='volverlogin'),
 ]

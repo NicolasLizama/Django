@@ -34,13 +34,13 @@ def usercreate(request):
     nombre = request.POST.get('nombre')
     email = request.POST.get('email')
     password = request.POST.get('password')
-    user = authe.create_user_with_email_and_password(nombre,email,password)
-    uid = user['localid']
+
+    user = authe.create_user_with_email_and_password(email,password)
+
+    #uid = user['localid']
 
     
-
-    
-    return render(request,"oficial.html")
+    return render(request, 'ingreso.html')
     
 
 
