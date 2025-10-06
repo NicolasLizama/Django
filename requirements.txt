@@ -1,0 +1,5 @@
+Django>=4.2,<5.0
+pyrebase4==4.5.0
+requests>=2.31.0
+
+##google-cloud-storage>=2.10.0
