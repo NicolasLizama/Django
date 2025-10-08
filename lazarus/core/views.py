@@ -31,41 +31,16 @@ def introduccion(request):
     return render(request, 'introduccion.html')
 
 def usercreate(request):
-    if request.method == "POST":
-        nombre = request.POST.get('nombre')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-
-        try:
-            # Crear el usuario en Firebase Authentication
-            user = authe.create_user_with_email_and_password(email, password)
-
-            # Obtener el UID del usuario recién creado
-            uid = user['localId']
-
-            # Crear un diccionario con los datos adicionales
-            user_data = {
-                'nombre': nombre,
-                'email': email
-            }
-
-            # Guardar los datos del usuario en la base de datos (Realtime Database)
-            result = database.child('users').child(uid).set(user_data)
-
-            if result is None:
-                error_message = "Error al guardar los datos en la base de datos."
-                return render(request, 'CrearUsuario.html', {'error_message': error_message})
-
-            # Si el usuario se crea correctamente, redirigir a la página de inicio
-            return redirect('/')
-
-        except Exception as e:
-            # Manejar excepciones específicas y mostrar un mensaje de error
-            error_message = f"Hubo un problema al crear el usuario: {str(e)}"
-            return render(request, 'CrearUsuario.html', {'error_message': error_message})
-
-    # Si el formulario no es POST, simplemente mostrar la página de registro
-    return render(request, 'CrearUsuario.html')
+    nombre = request.POST.get('nombre')
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    #uid = user['localid']
+    try:
+        user = authe.create_user_with_email_and_password(email,password)
+    except:
+        return redirect('/crear')
+    # #lleva a la pagina url normal con nada     
+    return redirect('/')
 
 
 # Función para iniciar sesión
