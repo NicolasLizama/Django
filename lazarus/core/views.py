@@ -1,6 +1,8 @@
 #views.py
 from django.shortcuts import render, redirect
 import pyrebase 
+import firebase_admin
+from firebase_admin import credentials, firestore
 
 config = {
      'apiKey': "AIzaSyDOK385X7jO5D_16i1EcjnIBpDwVOZhDwc",
@@ -13,9 +15,19 @@ config = {
      'databaseURL': ""
    }
 
-firebase = pyrebase.initialize_app(config)
-authe = firebase.auth()
-database = firebase.database()
+# --- Inicializa Pyrebase (para Auth) ---
+firebase_client = pyrebase.initialize_app(config)
+authe = firebase_client.auth()
+
+# --- Inicializa Firebase Admin (para Firestore) ---
+json_firebase = r"C:\Users\nicol\Desktop\proyect\lazarusdb-d37a9-firebase-adminsdk-fbsvc-2b55ec66c6.json"
+
+# Solo inicializa una vez (evita error “already exists”)
+if not firebase_admin._apps:
+    cred = credentials.Certificate(json_firebase)
+    firebase_admin.initialize_app(cred)
+
+db = firestore.client()  # <- ahora funciona correctamente
 
 # Vistas páginas
 def paginator(request):
@@ -34,9 +46,16 @@ def usercreate(request):
     nombre = request.POST.get('nombre')
     email = request.POST.get('email')
     password = request.POST.get('password')
-    #uid = user['localid']
     try:
         user = authe.create_user_with_email_and_password(email,password)
+        uid = user['localId']
+        data = {
+                'uid': uid,
+                'nombre': nombre,
+                'email': email
+        }
+        db.collection('users').document(uid).set(data)
+
     except:
         return redirect('/crear')
     # #lleva a la pagina url normal con nada     
