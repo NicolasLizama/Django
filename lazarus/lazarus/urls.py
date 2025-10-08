@@ -22,8 +22,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.paginator),
     path('fail/', views.paginatorfail),
+    path('introduccion/', views.introduccion, name='introduccion'),
     path('ingresar/', views.ingresar),
     path('crear/', views.paginator2),
+    path('recuperar_contraseña/', views.recuperar_contraseña, name='recuperar_contraseña'),
     path('usercreate/', views.usercreate),
     path('salir/', views.salir, name='volverlogin'),
 ]

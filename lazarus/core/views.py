@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
+#views.py
+from django.shortcuts import render, redirect
 import pyrebase 
 
 config = {
@@ -11,15 +11,14 @@ config = {
      'appId': "1:245173338005:web:54ff73c8920d358558409c",
      'measurementId': "G-4STFMWRSQY",
      'databaseURL': ""
-   };
+   }
 
-firebase= pyrebase.initialize_app(config)
-authe= firebase.auth()
-database= firebase.database()
+firebase = pyrebase.initialize_app(config)
+authe = firebase.auth()
+database = firebase.database()
 
-# Vistas paginas
+# Vistas páginas
 def paginator(request):
-    #wea= database.child('users').child('users').get().val()
     return render(request, 'ingreso.html')
 
 def paginator2(request):
@@ -28,41 +27,54 @@ def paginator2(request):
 def paginatorfail(request):
     return render(request, 'login.html')
 
-# Creacion de funciones 
+def introduccion(request):
+    return render(request, 'introduccion.html')
 
+# Función de creación de usuario
 def usercreate(request):
     nombre = request.POST.get('nombre')
     email = request.POST.get('email')
     password = request.POST.get('password')
 
-    
-
-    #uid = user['localid']
     try:
-        user = authe.create_user_with_email_and_password(email,password)
+        user = authe.create_user_with_email_and_password(email, password)
     except:
         return redirect('/crear')
-    # #lleva a la pagina url normal con nada     
+    
     return redirect('/')
 
-
-
+# Función para iniciar sesión
 def ingresar(request):
     email = request.POST.get('email')
     password = request.POST.get('password')
     try:
-      user = authe.sign_in_with_email_and_password(email,password)
+        users = authe.sign_in_with_email_and_password(email, password)
     except:
-       message ="ta malo con lo que existe"
-       return redirect('/') 
+        message = "Usuario o contraseña incorrectos"
+        return redirect('/')
     
-    return render(request,"oficial.html")
+    return render(request, "oficial.html")
 
-
-
+# Función para salir
 def salir(request):
     try:
         del request.session['uid'] 
     except KeyError:
         pass
     return redirect('/')
+
+from django.http import JsonResponse
+
+def recuperar_contraseña(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+
+        try:
+            authe.send_password_reset_email(email)
+            message = "Se ha enviado un correo con las instrucciones para restablecer tu contraseña (Si no lo ves debe estar en SPAM)."
+        except Exception as e:
+            message = "El correo electrónico no está registrado o hubo un problema al enviar el correo. Verifica el correo e inténtalo nuevamente."
+
+        return JsonResponse({'message': message})
+    
+    return render(request, 'recuperar_contraseña.html')

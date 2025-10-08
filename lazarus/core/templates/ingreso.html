@@ -4,18 +4,18 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Inicio sesión</title>
-  <link rel="stylesheet" href="{% static 'css/login_style.css' %}">
+    <title>Iniciar sesión</title>
+    <link rel="stylesheet" href="{% static 'css/login_registro_style.css' %}">
   </head>
   
   <body>
-    <div class="form-container">
+    <div class="form-container">  
       <form action="/ingresar/" method="POST">
           {% csrf_token %}
           <h1 class="titulo">Iniciar sesión</h1>
 
           <label for="email">
-              <input name="email" placeholder="Correo" type="text" id="email" required>
+              <input name="email" placeholder="Correo" type="email" id="email" required>
           </label>
 
           <label for="password">
@@ -23,8 +23,15 @@
           </label>
 
           <button type="submit" id="button">Iniciar sesión</button>
+
+          <a href="recuperar_contraseña/" class="link">¿Olvidaste la contraseña?</a>
       </form>
-      <a href="crear/" class="link">¿No tienes cuenta? Regístrate</a>
+      <div class="separador">
+      </div>
+      <div class="registro">
+        <a href="crear/" class="link">¿No tienes cuenta? Crea una aquí</a>
+      </div>
+
     </div>
   </body>
 </html>

@@ -1,0 +1,89 @@
+{% load static %}
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recuperar Contraseña</title>
+    <link rel="stylesheet" href="{% static 'css/login_registro_style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  
+  <body>
+    <div class="form-container">
+      
+      <form id="recover-password-form" action="/recuperar_contraseña/" method="POST">
+          {% csrf_token %}
+          <h1 class="titulo">Recuperar Contraseña</h1>
+
+          <label for="email">
+              <input name="email" placeholder="Correo electrónico" type="email" id="email" required>
+          </label>
+
+          <button type="submit" id="button">Enviar instrucciones</button>
+          
+      </form>
+
+      <div id="response-message" class="mensaje" style="display:none;">
+          <p id="response-text"></p>
+      </div>
+
+      <div class="separador"></div>
+
+      <div class="volver">
+        <a href="/" class="link">Volver al inicio</a>
+      </div>
+
+    </div>
+
+    <script>
+      $(document).ready(function() {
+        $('#recover-password-form').submit(function(event) {
+          event.preventDefault(); // Evitar el envío del formulario
+
+          var email = $('#email').val();
+
+          if (!validateEmail(email)) {
+            showMessage('Por favor, ingresa un correo electrónico válido.', 'error');
+            return;
+          }
+
+          showMessage('Enviando instrucciones...', 'info');
+
+          $.ajax({
+            type: 'POST',
+            url: '/recuperar_contraseña/',
+            data: {
+              'email': email,
+              'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+            },
+            success: function(response) {
+              $('#response-message').show();
+              $('#response-text').text(response.message);
+            },
+            error: function(xhr, status, error) {
+              showMessage('Ocurrió un error al intentar recuperar la contraseña. Intenta de nuevo.', 'error');
+            }
+          });
+        });
+
+        function showMessage(message, type) {
+          $('#response-message').show();
+          $('#response-text').text(message);
+          if (type === 'error') {
+            $('#response-message').css('background-color', '#ffcccc');
+            $('#response-message').css('color', 'red');
+          } else if (type === 'info') {
+            $('#response-message').css('background-color', '#e0f7fa');
+            $('#response-message').css('color', 'blue');
+          }
+        }
+
+        function validateEmail(email) {
+          var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+          return re.test(email);
+        }
+      });
+    </script>
+  </body>
+</html>

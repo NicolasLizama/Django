@@ -34,6 +34,26 @@ body {
   color: #333;
 }
 
+/* Estilo para el mensaje de respuesta */
+.mensaje {
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 20px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.separador {
+  margin-top: 20px;
+  border-top: 1px solid #e0e9f7;
+}
+
+.volver {
+  text-align: center;
+  margin-top: 20px;
+}
+
+
 /* Estilos para los campos de entrada */
 label {
   display: block;
@@ -85,3 +105,4 @@ button:hover {
 .link:hover {
   text-decoration: underline;
 }
+

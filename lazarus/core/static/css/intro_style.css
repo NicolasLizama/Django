@@ -1,0 +1,115 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Fondo general */
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #f4f7fc, #e0e9f7);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+}
+
+/* Contenedor principal */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Título y subtítulo */
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #2f2f2f;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 40px;
+}
+
+/* Contenedor de tarjetas */
+.cards {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 40px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 30%;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.card img {
+  max-width: 80px;
+  margin-bottom: 15px;
+}
+
+.card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #2f2f2f;
+}
+
+.card p {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Hover efecto para las tarjetas */
+.card:hover {
+  transform: translateY(-10px);
+}
+
+/* Sección de misión */
+.mission {
+  background-color: #fff;
+  padding: 30px;
+  margin-top: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.mission h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.mission p {
+  font-size: 1.1rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Botón de acción */
+.start-btn {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 15px 30px;
+  background-color: #4e8df5;
+  color: white;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.start-btn:hover {
+  background-color: #3578e5;
+}
