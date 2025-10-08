@@ -5,14 +5,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Crear usuario</title>
-  <link rel="stylesheet" href="{% static 'css/login_registro_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login_registro_style.css' %}">
   </head>
   <body>
     <div class="form-container">
       <form action="/usercreate/" method="POST">
           {% csrf_token %}
           
-          <h1 class="titulo">Registrar usuario</h1>
+          <h1 class="titulo">Ingresa tus datos</h1>
 
           <label for="nombre">
               <input name="nombre" placeholder="Nombre" type="text" id="nombre" required>
@@ -28,10 +28,16 @@
 
           <button type="submit" id="button">Crear</button>
 
-          <div class="volver">
-          <a href="/" class="link">Volver al inicio</a>
-          </div>
+          <div class="separador"></div>
+
+          <!-- Agregar un bloque para mostrar mensajes de éxito o error -->
+          {% if error_message %}
+            <div class="error-message">{{ error_message }}</div>
+          {% endif %}
           
+          <div class="volver">
+            <a href="/" class="link">Volver al inicio</a>
+          </div>
       </form>
     </div>
   </body>
