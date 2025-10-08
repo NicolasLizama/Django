@@ -19,7 +19,7 @@ config = {
 firebase_client = pyrebase.initialize_app(config)
 authe = firebase_client.auth()
 
-# --- Inicializa Firebase Admin (para Firestore) ---
+# --- Inicializa Firebase Admin (para Firestore) --- cambiar a la ruta tuya personal
 json_firebase = r"C:\Users\nicol\Desktop\proyect\lazarusdb-d37a9-firebase-adminsdk-fbsvc-2b55ec66c6.json"
 
 # Solo inicializa una vez (evita error “already exists”)
