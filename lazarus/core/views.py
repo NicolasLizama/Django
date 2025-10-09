@@ -45,6 +45,7 @@ def introduccion(request):
 def usercreate(request):
     nombre = request.POST.get('nombre')
     email = request.POST.get('email')
+    rut = request.POST.get('rut')
     apellido = request.POST.get('apellido')
     fecha_nacimiento = request.POST.get('fecha_nacimiento')
     telefono = request.POST.get('telefono')
@@ -60,6 +61,7 @@ def usercreate(request):
                 'email': email,
                 'fecha_nacimiento': fecha_nacimiento,
                 'telefono': telefono,
+                'rut': rut
                 
         }
         db.collection('users').document(uid).set(data)
