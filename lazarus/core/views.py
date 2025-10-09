@@ -45,14 +45,22 @@ def introduccion(request):
 def usercreate(request):
     nombre = request.POST.get('nombre')
     email = request.POST.get('email')
+    apellido = request.POST.get('apellido')
+    fecha_nacimiento = request.POST.get('fecha_nacimiento')
+    telefono = request.POST.get('telefono')
     password = request.POST.get('password')
+    
     try:
         user = authe.create_user_with_email_and_password(email,password)
         uid = user['localId']
         data = {
                 'uid': uid,
                 'nombre': nombre,
-                'email': email
+                'apellido': apellido,
+                'email': email,
+                'fecha_nacimiento': fecha_nacimiento,
+                'telefono': telefono,
+                
         }
         db.collection('users').document(uid).set(data)
 
