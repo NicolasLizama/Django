@@ -25,7 +25,7 @@ urlpatterns = [
     path('introduccion/', views.introduccion, name='introduccion'),
     path('ingresar/', views.ingresar),
     path('crear/', views.paginator2),
-    path('recuperar_contraseña/', views.recuperar_contraseña, name='recuperar_contraseña'),
+    #path('recuperar_contraseña/', views.recuperar_contraseña, name='recuperar_contraseña'),
     path('usercreate/', views.usercreate),
     path('salir/', views.salir, name='volverlogin'),
 ]
