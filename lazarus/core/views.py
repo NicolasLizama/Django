@@ -1,7 +1,7 @@
 #views.py
 from django.shortcuts import render, redirect
 from supabase import create_client, Client
-
+from django.http import JsonResponse
 
 # Conectarse a la api de supabase 
 url = "https://cixtrfcwsweaxtliwdgc.supabase.co"
@@ -11,12 +11,6 @@ key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNp
 supabase: Client = create_client(url, key)
 
 #ideal lo mejor es guardar eso en un env. pero lo dejo despues para farmear mas commits
-
-
-
-
-
-
 
 # Vistas páginas
 def paginator(request):
@@ -47,9 +41,9 @@ def usercreate(request):
                 "password": password
             })
             if response.user:
-                uid = response.user.id
+                #uid = response.user.id
                 data = {
-                    "uid": uid,
+                    #"uid": uid,
                     "nombre": nombre,
                     "apellido": apellido,
                     "email": email,
@@ -57,13 +51,31 @@ def usercreate(request):
                     "telefono": telefono,
                     "rut": rut
                 }
-                supabase.table("users").insert(data).execute()
+                supabase.table("usuarios").insert(data).execute()
             else:
                 return redirect('/crear')
         except Exception as e:
             print(e)
             return redirect('/crear')
     return redirect('/')
+
+# def supabase_login_required(view_func):
+#     def wrapper(request, *args, **kwargs):
+#         access_token = request.session.get("access_token")
+#         if not access_token:
+#             return render(request, 'ingreso.html')
+
+#         try:
+#             user = supabase.auth.get_user(access_token)
+#             if not user or not user.user:
+#                 return render(request, 'ingreso.html')
+#         except Exception as e:
+#             print("Token inválido:", e)
+#             return render(request, 'ingreso.html')
+
+#         return view_func(request, *args, **kwargs)
+#     return wrapper
+
 
 
 
@@ -78,10 +90,18 @@ def ingresar(request):
             })
             if session.user:
                 request.session["supabase_user"] = session.user.id
+                request.session["access_token"] = session.session.access_token
+                request.session["refresh_token"] = session.session.refresh_token
+                #request.session["nombre"] = session.user.user_metadata.get("name", email)
         except Exception as e:
             print(e)
             return redirect('/fail')
     return render(request, "oficial.html")
+
+# @supabase_login_required
+# def oficial(request):
+#     nombre = request.session.get("nombre", "Usuario")
+#     return render(request, "oficial.html", {"nombre": nombre})
 
 # Función para salir no funciona ahora
 def salir(request):
@@ -91,18 +111,62 @@ def salir(request):
         pass
     return redirect('/')
 
-from django.http import JsonResponse
 
-# def recuperar_contraseña(request):
-#     if request.method == "POST":
-#         # email = request.POST.get('email')
+def recuperar_contraseña(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        try:
+            supabase.auth.reset_password_for_email(email)
+            message = "Se ha enviado un correo con las instrucciones para restablecer tu contraseña (revisa también la carpeta de SPAM)."
+        except Exception as e:
+            print("Error al enviar correo:", e)
+            message = "El correo electrónico no está registrado o hubo un problema al enviar el correo. Verifica el correo e inténtalo nuevamente."
 
-#         # try:
-#         #     authe.send_password_reset_email(email)
-#         #     message = "Se ha enviado un correo con las instrucciones para restablecer tu contraseña (Si no lo ves debe estar en SPAM)."
-#         # except Exception as e:
-#         #     message = "El correo electrónico no está registrado o hubo un problema al enviar el correo. Verifica el correo e inténtalo nuevamente."
-
-#         # return JsonResponse({'message': message})
+        return JsonResponse({'message': message})
     
-#     return render(request, 'recuperar_contraseña.html')
+    return render(request, 'recuperar_contraseña.html')
+
+
+# Vista para cerrar sesión
+def logout_view(request):
+    request.session.flush()  # elimina toda la sesión de Django
+    return redirect('/ingresar')
+
+
+# # --- 1. Mostrar la página de cambio de contraseña ---
+# def mostrarCambioPassword(request):
+#     token = request.GET.get("access_token")  # token enviado por Supabase en el link
+
+#     if not token:
+#         # Si no hay token, redirige al inicio
+#         return redirect('/')
+
+#     # Si hay token, muestra la página cambioPass.html
+#     return render(request, 'CambioPass.html', {"token": token})
+
+
+# # --- 2. Procesar el cambio de contraseña ---
+# def HacercambiarPassword(request):
+#     if request.method == "POST":
+#         token = request.POST.get("token")
+#         nueva_contrasena = request.POST.get("password")
+
+#         if not token or not nueva_contrasena:
+#             return render(request, 'recuperar_contraseña.html', {
+#                 "error": "Faltan datos para cambiar la contraseña."
+#             })
+
+#         try:
+#             # Actualizar la contraseña en Supabase usando el token
+#             supabase.auth.update_user({"password": nueva_contrasena}, access_token=token)
+#             return render(request, 'recuperar_contraseña.html', {
+#                 "success": "Contraseña cambiada correctamente. Ya puedes iniciar sesión."
+#             })
+#         except Exception as e:
+#             print("Error al cambiar contraseña:", e)
+#             return render(request, 'recuperar_contraseña.html', {
+#                 "error": "No se pudo cambiar la contraseña. Intenta nuevamente."
+#             })
+
+#     # Si no es POST, vuelve al inicio
+#     return redirect('/')
