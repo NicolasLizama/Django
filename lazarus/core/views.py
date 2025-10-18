@@ -59,24 +59,23 @@ def usercreate(request):
             return redirect('/crear')
     return redirect('/')
 
-# def supabase_login_required(view_func):
-#     def wrapper(request, *args, **kwargs):
-#         access_token = request.session.get("access_token")
-#         if not access_token:
-#             return render(request, 'ingreso.html')
+#Proteccion de rutas por token supabase
+def supabase_login_required(view_func):
+    def wrapper(request, *args, **kwargs):
+        access_token = request.session.get("access_token")
+        if not access_token:
+            return render(request, 'ingreso.html')
 
-#         try:
-#             user = supabase.auth.get_user(access_token)
-#             if not user or not user.user:
-#                 return render(request, 'ingreso.html')
-#         except Exception as e:
-#             print("Token inválido:", e)
-#             return render(request, 'ingreso.html')
+        try:
+            user = supabase.auth.get_user(access_token)
+            if not user or not user.user:
+                return render(request, 'ingreso.html')
+        except Exception as e:
+            print("Token inválido:", e)
+            return render(request, 'ingreso.html')
 
-#         return view_func(request, *args, **kwargs)
-#     return wrapper
-
-
+        return view_func(request, *args, **kwargs)
+    return wrapper
 
 
 def ingresar(request):
@@ -92,24 +91,18 @@ def ingresar(request):
                 request.session["supabase_user"] = session.user.id
                 request.session["access_token"] = session.session.access_token
                 request.session["refresh_token"] = session.session.refresh_token
-                #request.session["nombre"] = session.user.user_metadata.get("name", email)
+                request.session["nombre"] = session.user.user_metadata.get("nombre", email)
         except Exception as e:
             print(e)
             return redirect('/fail')
-    return render(request, "oficial.html")
+    return redirect('/oficial')
 
-# @supabase_login_required
-# def oficial(request):
-#     nombre = request.session.get("nombre", "Usuario")
-#     return render(request, "oficial.html", {"nombre": nombre})
+#proteccion de la pagina oficial si detecta token
+@supabase_login_required
+def oficial(request):
+     nombre = request.session.get("nombre", "Usuario")
+     return render(request, "oficial.html", {"nombre": nombre})
 
-# Función para salir no funciona ahora
-def salir(request):
-    try:
-        del request.session['uid'] 
-    except KeyError:
-        pass
-    return redirect('/')
 
 
 def recuperar_contraseña(request):
@@ -130,7 +123,7 @@ def recuperar_contraseña(request):
 # Vista para cerrar sesión
 def logout_view(request):
     request.session.flush()  # elimina toda la sesión de Django
-    return redirect('/ingresar')
+    return redirect('/')
 
 
 # # --- 1. Mostrar la página de cambio de contraseña ---
@@ -169,4 +162,13 @@ def logout_view(request):
 #             })
 
 #     # Si no es POST, vuelve al inicio
+#     return redirect('/')
+
+
+# Función para salir no funciona ahora
+# def salir(request):
+#     try:
+#         del request.session['uid'] 
+#     except KeyError:
+#         pass
 #     return redirect('/')

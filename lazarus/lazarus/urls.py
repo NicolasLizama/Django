@@ -29,7 +29,8 @@ urlpatterns = [
    # path('mostrarCambioPassword/', views.mostrarCambioPassword, name='mostrarCambioPassword'),
    # path('HacercambiarPassword/', views.HacercambiarPassword, name='HacercambiarPassword'), 
     path('usercreate/', views.usercreate),
-    path('salir/', views.salir, name='volverlogin'),
+    path('oficial/', views.oficial),
+    path('logout_view/', views.logout_view,),
 ]
 
 

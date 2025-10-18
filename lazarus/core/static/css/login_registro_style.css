@@ -16,6 +16,7 @@ body {
   color: #333;
 }
 
+
 /* Contenedor del formulario */
 .form-container {
   background: #fff;
@@ -141,4 +142,6 @@ a.link:hover {
     opacity: 1;
     transform: translateY(0);
   }
+
+  
 }
