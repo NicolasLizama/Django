@@ -14,6 +14,10 @@
         <form action="/logout_view/" method="get">
             <button type="submit">Cerrar sesión</button>
         </form>
+        <form action="{% url 'Test_reconocimiento' %}" method="post" style="margin-top: 20px;">
+            {% csrf_token %}
+            <button type="submit" class="btn-izquierda">Reconocimiento</button>
+        </form>
     </div>
 
     <!-- 🔽 Botones de abajo -->

@@ -111,6 +111,53 @@ def gad7(request):
 def phq9(request):
     return render(request, 'phq9.html')
 
+@supabase_login_required
+def Test_reconocimiento(request):
+    return render(request, 'Test_reconocimiento.html')
+
+@supabase_login_required
+def TestRecco_enviar(request):
+    if request.method == "POST":
+        # Obtener los datos del formulario
+        carrera = request.POST.get('carrera')
+        motivo_estudio = request.POST.get('motivo_estudio')
+        año_estudio = request.POST.get('año_estudio')
+        intereses = request.POST.get('intereses')
+        malestar = request.POST.get('malestar')
+        expect_inicial = request.POST.get('expect_inicial')
+        razon = request.POST.get('razon')
+
+        # Obtener info del usuario actual desde la sesión
+        user_id = request.session.get("supabase_user")   # ID del usuario de Supabase
+        email = request.session.get("nombre")            # Nombre o correo
+
+        try:
+            # Estructura de datos para guardar en la tabla
+            data = {
+                "user_id": user_id,
+                "email": email,
+                "carrera": carrera,
+                "motivo_estudio": motivo_estudio,
+                "año_estudio": año_estudio,
+                "intereses": intereses,
+                "malestar": malestar,
+                "expect_inicial": expect_inicial,
+                "razon": razon
+            }
+
+            # Inserta en la tabla correspondiente (créala si no existe)
+            supabase.table("Test_reconocimiento").insert(data).execute()
+
+            return redirect('/oficial')  # o la página que quieras después del envío
+
+        except Exception as e:
+            print("Error al insertar en Supabase:", e)
+            return redirect('/fail')
+
+    return redirect('/')
+
+
+
 
 def recuperar_contraseña(request):
     if request.method == "POST":

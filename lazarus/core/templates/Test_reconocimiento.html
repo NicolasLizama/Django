@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un poco de ti  </title>
+    <link rel="stylesheet" href="{% static 'css/test_reco.css' %}">
+</head>
+<body>
+    <h1>Cuantanos un poco de ti</h1>
+    <div class="form-container">
+      <form action="/TestRecco_enviar/" method="POST">
+          {% csrf_token %}
+          
+          <h1 class="titulo"> Cuentanos de ti</h1>
+           <strong>¿Que carrera estudias?</strong>
+          <label for="carrera">
+              <input name="carrera" placeholder="Carrera" type="text" id="carrera" required>
+          </label>
+          
+          <strong>¿Que te motivo a estudiar tu carrera?</strong>
+          <label for="motivo_estudio">
+              <input name="motivo_estudio" placeholder="Motivacion" type="text" id="motivo_estudio"  required>
+          </label>
+          
+          <strong>¿En qué año te encuentras de la carrera?</strong>
+          <label for="año_estudio">
+              <input name="año_estudio" placeholder="Año" type="text" id="año_estudio" required>
+          </label>
+
+          <strong>¿Que intereses tienes?</strong>
+          <label for="intereses">
+              <input name="intereses" placeholder="Intereses" type="text" id="intereses" required>
+          </label>
+          
+          <strong>¿Has tenido malesteras de salud?</strong>
+          <label for="malestar">
+              <input name="malestar" placeholder="Malestar" type="text" id="malestar"  required>
+          </label>
+
+          <strong>¿Que expectativas tienes al contestar los cuestionarios?</strong>
+          <label for="expect_inicial">
+              <input name="expect_inicial" placeholder="Expectativas" type="text" id="expect_inicial" required>
+          </label>
+
+          <strong>¿Cual fue la razon por la que decidiste autoevaluarte?</strong>
+          <label for="razon">
+              <input name="razon" placeholder="Razon" type="text" id="razon" required>
+          </label>
+
+          <button type="submit" id="button">Enviar</button>
+
+          <div class="separador"></div>
+
+          {% if error_message %}
+            <div class="error-message">{{ error_message }}</div>    
+          {% endif %}
+          
+          <div class="volver">
+            <a href="oficial/" class="link">Volver</a>
+          </div>
+      </form>
+    </div>
+</body>
+</html>
+
