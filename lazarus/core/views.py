@@ -103,6 +103,13 @@ def oficial(request):
      nombre = request.session.get("nombre", "Usuario")
      return render(request, "oficial.html", {"nombre": nombre})
 
+@supabase_login_required
+def gad7(request):
+    return render(request, 'gad_7.html')
+
+@supabase_login_required
+def phq9(request):
+    return render(request, 'phq9.html')
 
 
 def recuperar_contraseña(request):

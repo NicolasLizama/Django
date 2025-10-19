@@ -5,14 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seguimos</title>
-    <link rel="stylesheet" href="{% static 'css/login_registro_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1> Bienvenido, {{ nombre }}!</h1>
+    <div class="form-container">
+        <h1 class="titulo">Bienvenido, {{ nombre }}!</h1>
 
-    <form action="/logout_view/" method="get">
-        <button type="submit">Cerrar sesión</button>
-    </form>
+        <form action="/logout_view/" method="get">
+            <button type="submit">Cerrar sesión</button>
+        </form>
+    </div>
+
+    <!-- 🔽 Botones de abajo -->
+    <div class="bottom-buttons">
+        <form action="{% url 'gad7' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-izquierda">GAD 7 Ansiedad</button>
+        </form>
+
+        <form action="{% url 'phq9' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-derecha">PHQ 9 Depresión</button>
+        </form>
+    </div>
+    
+</div>
 
 </body>
 </html>

@@ -30,6 +30,8 @@ urlpatterns = [
    # path('HacercambiarPassword/', views.HacercambiarPassword, name='HacercambiarPassword'), 
     path('usercreate/', views.usercreate),
     path('oficial/', views.oficial),
+    path('phq9/', views.phq9, name='phq9'),
+    path('gad7/', views.gad7, name='gad7'),
     path('logout_view/', views.logout_view,),
 ]
 
