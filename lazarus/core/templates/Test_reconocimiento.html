@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Un poco de ti  </title>
-    <link rel="stylesheet" href="{% static 'css/test_reco.css' %}">
+    <link rel="stylesheet" href="{% static 'css/test_style.css' %}">
 </head>
 <body>
     <h1>Cuantanos un poco de ti</h1>
@@ -13,7 +13,7 @@
       <form action="/TestRecco_enviar/" method="POST">
           {% csrf_token %}
           
-          <h1 class="titulo"> Cuentanos de ti</h1>
+          <h1 class="titulo">Fomulario</h1>
            <strong>¿Que carrera estudias?</strong>
           <label for="carrera">
               <input name="carrera" placeholder="Carrera" type="text" id="carrera" required>

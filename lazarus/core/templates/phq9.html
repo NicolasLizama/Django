@@ -1,14 +1,40 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>phq9</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test PHQ-9</title>
+  <link rel="stylesheet" href="{% static 'css/test_gad7_phq9.css' %}" />
 </head>
 <body>
-    <form action="/logout_view/" method="get">
-        <button type="submit">Cerrar sesión</button>
+  <div class="form-container">
+    <h1 class="titulo">Test PHQ-9: Depresión</h1>
+    <form action="{% url 'phq9' %}" method="post">
+      {% csrf_token %}
+
+      {% for pregunta in preguntas %}
+      <div class="pregunta">
+        <label for="q{{ forloop.counter }}">
+          <strong>{{ forloop.counter }}. En los últimos 14 días, ¿con qué frecuencia has sentido…?</strong>
+          <span class="descripcion">{{ pregunta }}</span>
+        </label>
+        <select name="q{{ forloop.counter }}" id="q{{ forloop.counter }}" required>
+          <option value="">Selecciona una opción</option>
+          <option value="0">Nunca</option>
+          <option value="1">Varios días</option>
+          <option value="2">Más de la mitad de los días</option>
+          <option value="3">Casi todos los días</option>
+        </select>
+      </div>
+      {% endfor %}
+
+      <button type="submit">Enviar respuestas</button>
+
+      <div class="volver">
+        <a href="/oficial" class="link">Volver</a>
+      </div>
     </form>
+  </div>
 </body>
 </html>

@@ -1,39 +1,41 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seguimos</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel principal</title>
+  <link rel="stylesheet" href="{% static 'css/home.css' %}" />
 </head>
 <body>
-    <div class="form-container">
-        <h1 class="titulo">Bienvenido, {{ nombre }}!</h1>
+  <main class="home-wrapper">
+    <section class="home-box">
+      <h1>Bienvenido, {{ nombre }}!</h1>
+      <p class="subtitle">Selecciona una opción para continuar</p>
 
-        <form action="/logout_view/" method="get">
-            <button type="submit">Cerrar sesión</button>
+      <div class="button-group">
+        <form action="{% url 'Test_reconocimiento' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn-action">Reconocimiento</button>
         </form>
-        <form action="{% url 'Test_reconocimiento' %}" method="post" style="margin-top: 20px;">
-            {% csrf_token %}
-            <button type="submit" class="btn-izquierda">Reconocimiento</button>
-        </form>
-    </div>
 
-    <!-- 🔽 Botones de abajo -->
-    <div class="bottom-buttons">
         <form action="{% url 'gad7' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn-izquierda">GAD 7 Ansiedad</button>
+          {% csrf_token %}
+          <button type="submit" class="btn-action">GAD 7 Ansiedad</button>
         </form>
 
         <form action="{% url 'phq9' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn-derecha">PHQ 9 Depresión</button>
+          {% csrf_token %}
+          <button type="submit" class="btn-action">PHQ 9 Depresión</button>
         </form>
-    </div>
-    
-</div>
+      </div>
 
+      <hr class="divider">
+
+      <form action="/logout_view/" method="get">
+        <button type="submit" class="btn-logout">Cerrar sesión</button>
+      </form>
+    </section>
+  </main>
 </body>
 </html>

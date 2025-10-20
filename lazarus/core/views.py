@@ -38,7 +38,13 @@ def usercreate(request):
         try:
             response = supabase.auth.sign_up({
                 "email": email,
-                "password": password
+                "password": password,
+                "options": {
+                    "data": {
+                        "nombre": nombre,
+                        "apellido": apellido
+                    }
+                }
             })
             if response.user:
                 #uid = response.user.id
@@ -100,8 +106,8 @@ def ingresar(request):
 #proteccion de la pagina oficial si detecta token
 @supabase_login_required
 def oficial(request):
-     nombre = request.session.get("nombre", "Usuario")
-     return render(request, "oficial.html", {"nombre": nombre})
+    nombre = request.session.get("nombre", "Usuario")
+    return render(request, "oficial.html", {"nombre": nombre})
 
 @supabase_login_required
 def gad7(request):
@@ -156,9 +162,6 @@ def TestRecco_enviar(request):
 
     return redirect('/')
 
-
-
-
 def recuperar_contraseña(request):
     if request.method == "POST":
         email = request.POST.get('email')
@@ -173,6 +176,33 @@ def recuperar_contraseña(request):
     
     return render(request, 'recuperar_contraseña.html')
 
+
+#PREGUNTAS PAL GAD 7 & PAL PHQ 9
+def gad7(request):
+    preguntas = [
+        "Nerviosismo, ansiedad o tensión.",
+        "Incapacidad para parar de preocuparte.",
+        "Preocupación excesiva por diferentes cosas.",
+        "Dificultad para relajarte.",
+        "Inquietud que dificulta quedarse quieto.",
+        "Irritabilidad o molestia fácil.",
+        "Miedo a que algo terrible ocurra."
+    ]
+    return render(request, 'gad_7.html', {"preguntas": preguntas})
+
+def phq9(request):
+    preguntas = [
+        "Poco interés o placer en hacer cosas.",
+        "Sentirse decaído, deprimido o sin esperanza.",
+        "Dificultad para dormir o dormir en exceso.",
+        "Sentirse cansado o con poca energía.",
+        "Poco apetito o comer en exceso.",
+        "Sentirse mal consigo mismo o que ha fallado.",
+        "Dificultad para concentrarse en cosas.",
+        "Moverse o hablar tan lento que otros lo noten, o estar inquieto.",
+        "Pensamientos de que estaría mejor muerto o de hacerse daño."
+    ]
+    return render(request, 'phq9.html', {"preguntas": preguntas})
 
 # Vista para cerrar sesión
 def logout_view(request):

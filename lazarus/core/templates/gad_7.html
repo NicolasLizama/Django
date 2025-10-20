@@ -1,61 +1,41 @@
 {% load static %}
-
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gad 7 </title>
-    <link rel="stylesheet" href="{% static 'css/login_registro_style.css' %}">
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test GAD-7</title>
+  <link rel="stylesheet" href="{% static 'css/test_gad7_phq9.css' %}" />
+</head>
+<body>
+  <div class="form-container">
+    <h1 class="titulo">Test GAD-7: Ansiedad</h1>
+    <form action="{% url 'gad7' %}" method="post">
+      {% csrf_token %}
 
-  <body>
-    <div class="form-container">
-      <form action="/usercreate/" method="POST">
-          {% csrf_token %}
-          
-          <h1 class="titulo">Registrar Usuario</h1>
-
-          <label for="nombre">
-              <input name="nombre" placeholder="Nombre" type="text" id="nombre" required>
-          </label>
-          
-          <label for="apellido">
-              <input name="apellido" placeholder="Apellido" type="text" id="apellido" required>
-          </label>
-
-          <label for="rut">
-              <input name="rut" placeholder="rut" type="text" id="rut" max="12" required>
-          </label>
-
-          <label for="fecha_nacimiento">
-              <input name="fecha_nacimiento" placeholder="Fecha de nacimiento" type="date" id="fecha_nacimiento" required>
-          </label>
-
-          <label for="telefono">
-              <input name="telefono" placeholder="Telefono" type="text" id="telefono" max="11" required>
-          </label>
+      {% for pregunta in preguntas %}
+      <div class="pregunta">
+        <label for="q{{ forloop.counter }}">
+          <strong>{{ forloop.counter }}. En los últimos 14 días, ¿con qué frecuencia has sentido…?</strong>
+          <span class="descripcion">{{ pregunta }}</span>
+        </label>
+        <select name="q{{ forloop.counter }}" id="q{{ forloop.counter }}" required>
+          <option value="">Selecciona una opción</option>
+          <option value="0">Nunca</option>
+          <option value="1">Varios días</option>
+          <option value="2">Más de la mitad de los días</option>
+          <option value="3">Casi todos los días</option>
+        </select>
+      </div>
+      {% endfor %}
 
 
-          <label for="email">
-              <input name="email" placeholder="Correo electrónico" type="email" id="email" required>
-          </label>
+      <button type="submit">Enviar respuestas</button>
 
-          <label for="password">
-              <input name="password" placeholder="Contraseña" type="password" id="password" required>
-          </label>
-
-          <button type="submit" id="button">Crear</button>
-
-          <div class="separador"></div>
-
-          {% if error_message %}
-            <div class="error-message">{{ error_message }}</div>
-          {% endif %}
-          
-          <div class="volver">
-            <a href="/" class="link">Volver al inicio</a>
-          </div>
-      </form>
-    </div>
-  </body>
+      <div class="volver">
+        <a href="/oficial" class="link">Volver</a>
+      </div>
+    </form>
+  </div>
+</body>
 </html>

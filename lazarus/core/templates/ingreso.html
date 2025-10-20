@@ -1,36 +1,50 @@
 {% load static %}
-
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Iniciar sesión</title>
-    <link rel="stylesheet" href="{% static 'css/login_registro_style.css' %}">
-  </head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión</title>
+  <link rel="stylesheet" href="{% static 'css/login_registro_style.css' %}">
+</head>
+<body>
+  <main class="login-wrapper">
+    <section class="login-box">
+      <h1>Bienvenido</h1>
+      <p class="subtitle">Accede a tu cuenta para continuar</p>
 
-  <body>
-    <div class="form-container">  
-      <form action="/ingresar/" method="POST">
-          {% csrf_token %}
-          <h1 class="titulo">Iniciar sesión</h1>
+      <form action="/ingresar/" method="POST" class="login-form">
+        {% csrf_token %}
 
-          <label for="email">
-              <input name="email" placeholder="Correo" type="email" id="email" required>
-          </label>
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" required>
+        </div>
 
-          <label for="password">
-              <input name="password" placeholder="Contraseña" type="password" id="password" required>
-          </label>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" placeholder="Tu contraseña" required>
+        </div>
 
-          <button type="submit" id="button">Iniciar sesión</button>
+        <div class="form-group">
+          <label for="perfil">Tipo de usuario</label>
+          <select id="perfil" name="perfil" required>
+            <option value="" disabled selected>Selecciona tu perfil</option>
+            <option value="estudiante">Estudiante</option>
+            <option value="medico">Profesional</option>
+          </select>
+        </div>
 
-          <a href="recuperar_contraseña/" class="link">¿Olvidaste la contraseña?</a>
+        <button type="submit" class="btn-login">Iniciar sesión</button>
+        <a href="/recuperar_contraseña/" class="link">¿Olvidaste tu contraseña?</a>
       </form>
-      
-      <div class="separador"></div>
-      <div class="registro">
-        <a href="crear/" class="link">¿No tienes cuenta? Crea una aquí</a>
-      </div>
-    </div>
-  </body>
+
+      <hr class="divider">
+
+      <p class="registro-text">¿No tienes cuenta?
+        <a href="/crear" class="link">Regístrate aquí</a>
+      </p>
+    </section>
+  </main>
+</body>
 </html>
