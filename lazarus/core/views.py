@@ -97,7 +97,8 @@ def ingresar(request):
                 request.session["supabase_user"] = session.user.id
                 request.session["access_token"] = session.session.access_token
                 request.session["refresh_token"] = session.session.refresh_token
-                request.session["nombre"] = session.user.user_metadata.get("nombre", email)
+                request.session["nombre"] = session.user.user_metadata.get("nombre", session.user.email)
+                request.session["email"] = session.user.email
         except Exception as e:
             print(e)
             return redirect('/fail')
@@ -121,6 +122,7 @@ def phq9(request):
 def Test_reconocimiento(request):
     return render(request, 'Test_reconocimiento.html')
 
+
 @supabase_login_required
 def TestRecco_enviar(request):
     if request.method == "POST":
@@ -133,15 +135,26 @@ def TestRecco_enviar(request):
         expect_inicial = request.POST.get('expect_inicial')
         razon = request.POST.get('razon')
 
-        # Obtener info del usuario actual desde la sesión
-        user_id = request.session.get("supabase_user")   # ID del usuario de Supabase
-        email = request.session.get("nombre")            # Nombre o correo
+        # Obtener el email del usuario actual desde la sesión
+        email_usuario = request.session.get("email") or request.session.get("nombre")
+
+        if not email_usuario:
+            print("No se encontró el correo del usuario en la sesión.")
+            return redirect('/fail')
 
         try:
-            # Estructura de datos para guardar en la tabla
+            #  Buscar id_usuario en la tabla usuarios
+            usuario_query = supabase.table("usuarios").select("id_usuario").eq("email", email_usuario).execute()
+
+            if not usuario_query.data:
+                print(f"No se encontró el usuario con correo {email_usuario} en la tabla usuarios.")
+                return redirect('/fail')
+
+            id_usuario = usuario_query.data[0]["id_usuario"]
+
+            # Preparar datos para insertar en Test_reconocimiento
             data = {
-                "user_id": user_id,
-                "email": email,
+                "id_usuario": id_usuario,
                 "carrera": carrera,
                 "motivo_estudio": motivo_estudio,
                 "año_estudio": año_estudio,
@@ -151,16 +164,19 @@ def TestRecco_enviar(request):
                 "razon": razon
             }
 
-            # Inserta en la tabla correspondiente (créala si no existe)
+            # Insertar el registro
             supabase.table("Test_reconocimiento").insert(data).execute()
 
-            return redirect('/oficial')  # o la página que quieras después del envío
+            print(f"✅ Test de reconocimiento guardado para usuario {email_usuario} (id_usuario={id_usuario})")
+            return redirect('/oficial')
 
         except Exception as e:
             print("Error al insertar en Supabase:", e)
             return redirect('/fail')
 
     return redirect('/')
+
+
 
 def recuperar_contraseña(request):
     if request.method == "POST":
