@@ -221,6 +221,7 @@ def gad7(request):
 
 
 
+# pronto debo codear el sistema de puntuacion a mano no te preucupes lector
 def gad7_enviar(request):
     if request.method == "POST":
         email_usuario = request.session.get("email") or request.session.get("nombre")
@@ -274,6 +275,48 @@ def phq9(request):
         "Pensamientos de que estaría mejor muerto o de hacerse daño."
     ]
     return render(request, 'phq9.html', {"preguntas": preguntas})
+
+
+
+# pronto debo codear el sistema de puntuacion a mano no te preucupes lector
+def phq9_enviar(request):
+    if request.method == "POST":
+        email_usuario = request.session.get("email") or request.session.get("nombre")
+        if not email_usuario:
+            return redirect('/fail')
+
+        # Buscar id_usuario en Supabase
+        usuario_query = supabase.table("usuarios").select("id_usuario").eq("email", email_usuario).execute()
+        if not usuario_query.data:
+            return redirect('/fail')
+        id_usuario = usuario_query.data[0]["id_usuario"]
+
+        # Diccionario para convertir número a texto
+        valores_phq9 = {
+            "0": "Nunca",
+            "1": "Varios días",
+            "2": "Más de la mitad de los días",
+            "3": "Casi todos los días"
+        }
+
+        # Preparar datos para insertar (coincidiendo con tu tabla phq_9)
+        data = {
+            "id_usuario": id_usuario,
+            "Bajo_interes": valores_phq9.get(request.POST.get("q1")),
+            "deprimido": valores_phq9.get(request.POST.get("q2")),
+            "diff_dormir": valores_phq9.get(request.POST.get("q3")),
+            "descontrol_apetito": valores_phq9.get(request.POST.get("q4")),
+            "baja_autoestima": valores_phq9.get(request.POST.get("q5")),
+            "baja_concentracion": valores_phq9.get(request.POST.get("q6")),
+            "inquietud": valores_phq9.get(request.POST.get("q7")),
+            "pensamientos_autodañinos": valores_phq9.get(request.POST.get("q8")),
+            "puntuacion": sum(int(request.POST.get(f"q{i}", 0)) for i in range(1, 9))
+        }
+
+        # Insertar en la tabla phq_9 (sin incluir fecha_creacion)
+        supabase.table("phq_9").insert(data).execute()
+        return redirect('/oficial')
+
 
 # Vista para cerrar sesión
 def logout_view(request):

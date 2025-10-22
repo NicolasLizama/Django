@@ -10,7 +10,7 @@
 <body>
   <div class="form-container">
     <h1 class="titulo">Test PHQ-9: Depresión</h1>
-    <form action="{% url 'phq9' %}" method="post">
+    <form action="/phq9_enviar/" method="post">
       {% csrf_token %}
 
       {% for pregunta in preguntas %}
