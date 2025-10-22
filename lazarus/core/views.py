@@ -180,15 +180,15 @@ def TestRecco_enviar(request):
 
             print(f"✅ Test de reconocimiento guardado para usuario {email_usuario} (id_usuario={id_usuario})")
             return redirect('/oficial')
+        
 
         except Exception as e:
             print("Error al insertar en Supabase:", e)
             return redirect('/fail')
-
+    
     return redirect('/')
-
-
-
+    
+#este manda correo pero aun no cambia contraseña
 def recuperar_contraseña(request):
     if request.method == "POST":
         email = request.POST.get('email')
@@ -216,7 +216,50 @@ def gad7(request):
         "Miedo a que algo terrible ocurra."
     ]
     
+    
     return render(request, 'gad_7.html', {"preguntas": preguntas})
+
+
+
+def gad7_enviar(request):
+    if request.method == "POST":
+        email_usuario = request.session.get("email") or request.session.get("nombre")
+        if not email_usuario:
+            return redirect('/fail')
+
+        # Buscar id_usuario en Supabase
+        usuario_query = supabase.table("usuarios").select("id_usuario").eq("email", email_usuario).execute()
+        if not usuario_query.data:
+            return redirect('/fail')
+        id_usuario = usuario_query.data[0]["id_usuario"]
+
+        # Diccionario para convertir número a texto
+        valores_gad7 = {
+            "0": "Nunca",
+            "1": "Varios días",
+            "2": "Más de la mitad de los días",
+            "3": "Casi todos los días"
+        }
+
+        # Preparar datos para insertar
+        data = {
+            "id_usuario": id_usuario,
+            "nerviosismo": valores_gad7.get(request.POST.get("q1")),
+            "incapacidad": valores_gad7.get(request.POST.get("q2")),
+            "preocupacion": valores_gad7.get(request.POST.get("q3")),
+            "difi_relajacion": valores_gad7.get(request.POST.get("q4")),
+            "inquietud": valores_gad7.get(request.POST.get("q5")),
+            "irritabilidad": valores_gad7.get(request.POST.get("q6")),
+            "miedo": valores_gad7.get(request.POST.get("q7")),
+            "puntuacion": sum(int(request.POST.get(f"q{i}", 0)) for i in range(1, 8))  # suma de todas las respuestas
+        }
+
+        supabase.table("gad_7").insert(data).execute()
+        return redirect('/oficial')
+
+
+
+
 
 def phq9(request):
     preguntas = [

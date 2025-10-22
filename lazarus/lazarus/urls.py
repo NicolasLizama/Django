@@ -32,6 +32,7 @@ urlpatterns = [
     path('oficial/', views.oficial),
     path('phq9/', views.phq9, name='phq9'),
     path('gad7/', views.gad7, name='gad7'),
+    path('gad7_enviar/', views.gad7_enviar, name='gad7_enviar'),
     path('Test_reconocimiento', views.Test_reconocimiento, name='Test_reconocimiento'),
     path('TestRecco_enviar/', views.TestRecco_enviar, name='TestRecco_enviar'),
     path('logout_view/', views.logout_view,),

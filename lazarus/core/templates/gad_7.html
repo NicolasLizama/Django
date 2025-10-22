@@ -10,7 +10,7 @@
 <body>
   <div class="form-container">
     <h1 class="titulo">Test GAD-7: Ansiedad</h1>
-    <form action="{% url 'gad7' %}" method="post">
+    <form action="/gad7_enviar/" method="post">
       {% csrf_token %}
 
       {% for pregunta in preguntas %}
