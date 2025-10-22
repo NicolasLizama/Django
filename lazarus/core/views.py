@@ -12,6 +12,7 @@ supabase: Client = create_client(url, key)
 
 #ideal lo mejor es guardar eso en un env. pero lo dejo despues para farmear mas commits
 
+
 # Vistas páginas
 def paginator(request):
     return render(request, 'ingreso.html')
@@ -125,6 +126,7 @@ def Test_reconocimiento(request):
 
 @supabase_login_required
 def TestRecco_enviar(request):
+
     if request.method == "POST":
         # Obtener los datos del formulario
         carrera = request.POST.get('carrera')
@@ -164,8 +166,17 @@ def TestRecco_enviar(request):
                 "razon": razon
             }
 
-            # Insertar el registro
+            # Preparar datos para insertar en carrera
+            data_carrera = {
+                "id_usuario": id_usuario,
+                "nombre_carrera": carrera
+            }   
+
+            # Insertar en tabla Test_reconocimiento
             supabase.table("Test_reconocimiento").insert(data).execute()
+
+            # Insertar en tabla en carrera
+            supabase.table("carrera").insert(data_carrera).execute()
 
             print(f"✅ Test de reconocimiento guardado para usuario {email_usuario} (id_usuario={id_usuario})")
             return redirect('/oficial')
@@ -204,6 +215,7 @@ def gad7(request):
         "Irritabilidad o molestia fácil.",
         "Miedo a que algo terrible ocurra."
     ]
+    
     return render(request, 'gad_7.html', {"preguntas": preguntas})
 
 def phq9(request):
