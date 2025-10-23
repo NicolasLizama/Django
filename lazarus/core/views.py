@@ -12,7 +12,6 @@ supabase: Client = create_client(url, key)
 
 #ideal lo mejor es guardar eso en un env. pero lo dejo despues para farmear mas commits
 
-
 # Vistas páginas
 def paginator(request):
     return render(request, 'ingreso.html')
@@ -216,9 +215,7 @@ def gad7(request):
         "Miedo a que algo terrible ocurra."
     ]
     
-    
     return render(request, 'gad_7.html', {"preguntas": preguntas})
-
 
 
 # pronto debo codear el sistema de puntuacion a mano no te preucupes lector
@@ -258,10 +255,6 @@ def gad7_enviar(request):
         supabase.table("gad_7").insert(data).execute()
         return redirect('/oficial')
 
-
-
-
-
 def phq9(request):
     preguntas = [
         "Poco interés o placer en hacer cosas.",
@@ -275,8 +268,6 @@ def phq9(request):
         "Pensamientos de que estaría mejor muerto o de hacerse daño."
     ]
     return render(request, 'phq9.html', {"preguntas": preguntas})
-
-
 
 # pronto debo codear el sistema de puntuacion a mano no te preucupes lector
 def phq9_enviar(request):
@@ -316,6 +307,18 @@ def phq9_enviar(request):
         # Insertar en la tabla phq_9 (sin incluir fecha_creacion)
         supabase.table("phq_9").insert(data).execute()
         return redirect('/oficial')
+
+@supabase_login_required
+def Test_reconocimiento(request):
+    try:
+        # Obtener todas las carreras desde la tabla 'carrera'
+        response = supabase.table("carrera").select("id_carrera, nombre_carrera").execute()
+        carreras = response.data if response.data else []
+    except Exception as e:
+        print("Error al obtener carreras:", e)
+        carreras = []
+
+    return render(request, 'Test_reconocimiento.html', {"carreras": carreras})
 
 
 # Vista para cerrar sesión

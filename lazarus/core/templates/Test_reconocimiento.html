@@ -1,68 +1,75 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Un poco de ti  </title>
+    <title>Un poco de ti</title>
     <link rel="stylesheet" href="{% static 'css/test_style.css' %}">
 </head>
 <body>
-    <h1>Cuantanos un poco de ti</h1>
+    <h1>Cuéntanos un poco de ti</h1>
+
     <div class="form-container">
-      <form action="TestRecco_enviar/" method="POST">
-          {% csrf_token %}
-          
-          <h1 class="titulo">Fomulario</h1>
-           <strong>¿Que carrera estudias?</strong>
-          <label for="carrera">
-              <input name="carrera" placeholder="Carrera" type="text" id="carrera" required>
-          </label>
+        <form action="TestRecco_enviar/" method="POST">
+            {% csrf_token %}
+            
+            <h1 class="titulo">Formulario</h1>
 
-          
-          <strong>¿Que te motivo a estudiar tu carrera?</strong>
-          <label for="motivo_estudio">
-              <input name="motivo_estudio" placeholder="Motivacion" type="text" id="motivo_estudio"  required>
-          </label>
-          
-          <strong>¿En qué año te encuentras de la carrera?</strong>
-          <label for="año_estudio">
-              <input name="año_estudio" placeholder="Año" type="text" id="año_estudio" required>
-          </label>
+            <div class="form-group">
+                <strong>¿Qué carrera estudias?</strong>
+                <label for="carrera">
+                    <select name="carrera" id="carrera" required>
+                        <option value="">-- Selecciona tu carrera --</option>
+                        {% for c in carreras %}
+                            <option value="{{ c.nombre_carrera }}">{{ c.nombre_carrera }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
 
-          <strong>¿Que intereses tienes?</strong>
-          <label for="intereses">
-              <input name="intereses" placeholder="Intereses" type="text" id="intereses" required>
-          </label>
-          
-          <strong>¿Has tenido malesteras de salud?</strong>
-          <label for="malestar">
-              <input name="malestar" placeholder="Malestar" type="text" id="malestar"  required>
-          </label>
+            <div class="form-group">
+                <strong>¿Qué te motivó a estudiar tu carrera?</strong>
+                <input name="motivo_estudio" placeholder="Motivación" type="text" id="motivo_estudio" required>
+            </div>
 
-          <strong>¿Que expectativas tienes al contestar los cuestionarios?</strong>
-          <label for="expect_inicial">
-              <input name="expect_inicial" placeholder="Expectativas" type="text" id="expect_inicial" required>
-          </label>
+            <div class="form-group">
+                <strong>¿En qué año te encuentras de la carrera?</strong>
+                <input name="año_estudio" placeholder="Año" type="text" id="año_estudio" required>
+            </div>
 
-          <strong>¿Cual fue la razon por la que decidiste autoevaluarte?</strong>
-          <label for="razon">
-              <input name="razon" placeholder="Razon" type="text" id="razon" required>
-          </label>
+            <div class="form-group">
+                <strong>¿Qué intereses tienes?</strong>
+                <input name="intereses" placeholder="Intereses" type="text" id="intereses" required>
+            </div>
 
-          <button type="submit" id="button">Enviar</button>
+            <div class="form-group">
+                <strong>¿Has tenido malestares de salud?</strong>
+                <input name="malestar" placeholder="Malestar" type="text" id="malestar" required>
+            </div>
 
-          <div class="separador"></div>
+            <div class="form-group">
+                <strong>¿Qué expectativas tienes al contestar los cuestionarios?</strong>
+                <input name="expect_inicial" placeholder="Expectativas" type="text" id="expect_inicial" required>
+            </div>
 
-          {% if error_message %}
-            <div class="error-message">{{ error_message }}</div>    
-          {% endif %}
-          
-          <div class="volver">
-            <a href="oficial/" class="link">Volver</a>
-          </div>
-      </form>
+            <div class="form-group">
+                <strong>¿Cuál fue la razón por la que decidiste autoevaluarte?</strong>
+                <input name="razon" placeholder="Razón" type="text" id="razon" required>
+            </div>
+
+            <button type="submit" id="button">Enviar</button>
+
+            <div class="separador"></div>
+
+            {% if error_message %}
+                <div class="error-message">{{ error_message }}</div>    
+            {% endif %}
+
+            <div class="volver">
+                <a href="oficial/" class="link">Volver</a>
+            </div>
+        </form>
     </div>
 </body>
 </html>
-
