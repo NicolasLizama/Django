@@ -65,7 +65,7 @@ select {
 }
 
 select:focus {
-  border-color: #4e8df5;
+  border-color: #009688;
   outline: none;
 }
 
@@ -73,7 +73,7 @@ select:focus {
 button {
   width: 100%;
   padding: 12px;
-  background-color: #4e8df5;
+  background-color: #009688;
   color: white;
   border: none;
   border-radius: 8px;
@@ -84,7 +84,7 @@ button {
 }
 
 button:hover {
-  background-color: #3578e5;
+  background-color: #00796b;
   transform: translateY(-2px);
 }
 
@@ -99,7 +99,7 @@ button:active {
 }
 
 .volver .link {
-  color: #4e8df5;
+  color: #00796b;
   text-decoration: none;
   font-weight: 600;
 }
