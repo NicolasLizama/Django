@@ -12,23 +12,26 @@
     <h1 class="titulo">Test GAD-7: Ansiedad</h1>
     <form action="/gad7_enviar/" method="post">
       {% csrf_token %}
-
-      {% for pregunta in preguntas %}
-      <div class="pregunta">
-        <label for="q{{ forloop.counter }}">
-          <strong>{{ forloop.counter }}. En los últimos 14 días, ¿con qué frecuencia has sentido…?</strong>
-          <span class="descripcion">{{ pregunta }}</span>
-        </label>
-        <select name="q{{ forloop.counter }}" id="q{{ forloop.counter }}" required>
-          <option value="">Selecciona una opción</option>
-          <option value="0">Nunca</option>
-          <option value="1">Varios días</option>
-          <option value="2">Más de la mitad de los días</option>
-          <option value="3">Casi todos los días</option>
-        </select>
+      
+      <!-- Preguntas -->
+        <div class="seccion">
+          <h2>Síntomas Emocionales</h2>
+            <span class="descripcion">En los últimos 14 días, ¿con qué frecuencia has sentido…?</span>
+          {% for pregunta in preguntas %}
+          <div class="pregunta">
+            <label for="q{{ forloop.counter }}">
+              <strong>{{ forloop.counter }}. {{ pregunta }}</strong>
+            </label>
+            <select name="q{{ forloop.counter }}" id="q{{ forloop.counter }}" required>
+              <option value="">Selecciona una opción</option>
+              <option value="0">Nunca</option>
+              <option value="1">Varios días</option>
+              <option value="2">Más de la mitad de los días</option>
+              <option value="3">Casi todos los días</option>
+            </select>
+          </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-
 
       <button type="submit">Enviar respuestas</button>
 

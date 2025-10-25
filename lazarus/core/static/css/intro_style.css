@@ -102,7 +102,7 @@ body {
   display: inline-block;
   margin-top: 40px;
   padding: 15px 30px;
-  background-color: #4e8df5;
+  background-color: #009688;
   color: white;
   border-radius: 50px;
   font-size: 1.2rem;
@@ -111,5 +111,5 @@ body {
 }
 
 .start-btn:hover {
-  background-color: #3578e5;
+  background-color: #00796b;;
 }

@@ -2,4 +2,3 @@ pip install Django
 pip install requests
 pip install supabase
 pip install python-dateutil
-
