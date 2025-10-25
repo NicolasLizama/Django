@@ -260,12 +260,14 @@ def TestRecco_enviar(request):
             return redirect('/fail')
 
         try:
+            # Obtener el ID del usuario desde la base de datos
             usuario_query = supabase.table("usuarios").select("id_usuario").eq("email", email_usuario).execute()
             if not usuario_query.data:
                 return redirect('/fail')
 
             id_usuario = usuario_query.data[0]["id_usuario"]
 
+            # Crear el diccionario de datos para la tabla Test_reconocimiento
             data = {
                 "id_usuario": id_usuario,
                 "carrera": carrera,
@@ -277,10 +279,8 @@ def TestRecco_enviar(request):
                 "razon": razon
             }
 
-            data_carrera = {"id_usuario": id_usuario, "nombre_carrera": carrera}
-
+            # Insertar los datos en la tabla Test_reconocimiento
             supabase.table("Test_reconocimiento").insert(data).execute()
-            supabase.table("carrera").insert(data_carrera).execute()
 
             print(f"✅ Test guardado para {email_usuario} (id={id_usuario})")
             return redirect('/oficial')
