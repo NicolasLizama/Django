@@ -1,0 +1,35 @@
+.tabla-resultados {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tabla-resultados thead {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.tabla-resultados th, .tabla-resultados td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.tabla-resultados tbody tr:nth-child(even) {
+    background-color: #f3f6fb;
+}
+
+.tabla-resultados tbody tr:hover {
+    background-color: #dce9ff;
+    cursor: default;
+}
+
+h2 {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Mis Test</title>
+    <link rel="stylesheet" href="{% static 'css/test_result.css' %}">
+</head>
+<body>
+    <main class="home-wrapper">
+        <section class="home-box">
+        <h1>Resultados de tus Test, {{ nombre }}</h1>
+
+        <h2>Resultados PHQ-9</h2>
+        <table class="tabla-resultados">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Puntaje</th>
+                    <th>Interpretación</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in phq9_tests %}
+                <tr>
+                    <td>{{ test.fecha_creacion|date:"d/m/Y H:i" }}</td>
+                    <td>{{ test.puntuacion }}</td>
+                    <td>{{ test.interpretacion }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3">No hay resultados PHQ-9.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Resultados GAD-7</h2>
+        <table class="tabla-resultados">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Puntaje</th>
+                    <th>Interpretación</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in gad7_tests %}
+                <tr>
+                    <td>{{ test.fecha_creacion|date:"d/m/Y H:i" }}</td>
+                    <td>{{ test.puntuacion }}</td>
+                    <td>{{ test.interpretacion }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3">No hay resultados GAD-7.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+        <a href="/oficial/"><button class="btn-action">Volver al panel</button></a>
+        </section>
+    </main>
+</body>
+</html>

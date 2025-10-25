@@ -37,6 +37,7 @@ urlpatterns = [
     path('Test_reconocimiento', views.Test_reconocimiento, name='Test_reconocimiento'),
     path('TestRecco_enviar/', views.TestRecco_enviar, name='TestRecco_enviar'),
     path('logout_view/', views.logout_view,),
+    path('ver_test/', views.ver_test, name='ver_test'),
 ]
 
 

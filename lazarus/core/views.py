@@ -2,6 +2,8 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from supabase import create_client, Client
+from datetime import datetime
+from dateutil import parser
 
 # ==========================================================
 # 🔗 CONEXIÓN A SUPABASE
@@ -151,9 +153,85 @@ def phq9(request):
     ]
     return render(request, 'phq9.html', {"preguntas": preguntas})
 
+def interpretar_phq9(puntuacion):
+    if puntuacion <= 4:
+        return "Sin depresión"
+    elif 5 <= puntuacion <= 9:
+        return "Depresión leve"
+    elif 10 <= puntuacion <= 14:
+        return "Depresión moderada"
+    elif 15 <= puntuacion <= 19:
+        return "Depresión moderadamente severa"
+    else:  # 20 - 27
+        return "Depresión severa"
+
+def interpretar_gad7(puntuacion):
+    if puntuacion <= 4:
+        return "Sin ansiedad"
+    elif 5 <= puntuacion <= 9:
+        return "Ansiedad leve"
+    elif 10 <= puntuacion <= 14:
+        return "Ansiedad moderada"
+    else:  # 15 - 21
+        return "Ansiedad severa"
+    
+
+@supabase_login_required
+def ver_test(request):
+    email_usuario = request.session.get("email")
+    if not email_usuario:
+        return redirect('/fail')
+
+    try:
+        usuario_query = supabase.table("usuarios").select("id_usuario").eq("email", email_usuario).execute()
+        if not usuario_query.data:
+            return redirect('/fail')
+
+        id_usuario = usuario_query.data[0]["id_usuario"]
+
+        phq9_query = (
+            supabase.table("phq_9")
+            .select("puntuacion, fecha_creacion")
+            .eq("id_usuario", id_usuario)
+            .order("fecha_creacion", desc=True)
+            .execute()
+        )
+        phq9_tests = phq9_query.data if phq9_query.data else []
+        # Añadir interpretación a cada resultado
+        for test in phq9_tests:
+            if isinstance(test['fecha_creacion'], str):
+                test['fecha_creacion'] = parser.isoparse(test['fecha_creacion'])
+            test['interpretacion'] = interpretar_phq9(test['puntuacion'])
+
+        gad7_query = (
+            supabase.table("gad_7")
+            .select("puntuacion, fecha_creacion")
+            .eq("id_usuario", id_usuario)
+            .order("fecha_creacion", desc=True)
+            .execute()
+        )
+        gad7_tests = gad7_query.data if gad7_query.data else []
+        for test in gad7_tests:
+            if isinstance(test['fecha_creacion'], str):
+                test['fecha_creacion'] = parser.isoparse(test['fecha_creacion'])
+            test['interpretacion'] = interpretar_gad7(test['puntuacion'])
+            
+        context = {
+            "nombre": request.session.get("nombre"),
+            "phq9_tests": phq9_tests,
+            "gad7_tests": gad7_tests,
+        }
+
+        return render(request, "ver_test.html", context)
+
+    except Exception as e:
+        print("Error al cargar resultados:", e)
+        return redirect('/fail')
+
 # ==========================================================
 # 📋 TEST DE RECONOCIMIENTO
 # ==========================================================
+
 @supabase_login_required
 def Test_reconocimiento(request):
     try:

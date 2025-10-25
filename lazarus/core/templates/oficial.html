@@ -31,10 +31,16 @@
       </div>
 
       <hr class="divider">
+      <div class="button-group">
+        <form action="{% url 'ver_test' %}" method="get">
+          <button type="submit" class="btn-action">Ver mis Test</button>
+        </form>
 
-      <form action="/logout_view/" method="get">
-        <button type="submit" class="btn-logout">Cerrar sesión</button>
-      </form>
+
+        <form action="/logout_view/" method="get">
+          <button type="submit" class="btn-logout">Cerrar sesión</button>
+        </form>
+      </div>
     </section>
   </main>
 </body>
