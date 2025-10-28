@@ -241,14 +241,24 @@ def ver_perfil(request):
             return redirect('/fail')
 
         usuario_data = usuario_query.data[0]
+        
+        # Convertir la fecha de nacimiento de varchar a datetime
+        fecha_nacimiento_str = usuario_data["fecha_nacimiento"]
+        fecha_nacimiento = datetime.strptime(fecha_nacimiento_str, "%Y-%m-%d")  # Formato adecuado para '2000-11-01'
+
+        # Calcular la edad
+        today = datetime.today()
+        edad = today.year - fecha_nacimiento.year - ((today.month, today.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+
+        # Agregar al contexto la fecha de nacimiento y la edad
         context = {
             "nombre": usuario_data["nombre"],
             "apellido": usuario_data["apellido"],
             "email": usuario_data["email"],
-            "fecha_nacimiento": usuario_data["fecha_nacimiento"],
+            "fecha_nacimiento": fecha_nacimiento_str,
+            "edad": edad,  # Edad calculada
             "telefono": usuario_data["telefono"],
             "rut": usuario_data["rut"],
-            "id_carrera": usuario_data["id_carrera"],
         }
 
         return render(request, "ver_perfil.html", context)
@@ -256,7 +266,7 @@ def ver_perfil(request):
     except Exception as e:
         print("Error al cargar el perfil:", e)
         return redirect('/fail')
-
+    
 # ==========================================================
 # 📋 TEST DE RECONOCIMIENTO
 # ==========================================================

@@ -14,11 +14,13 @@
         <div class="profile-info">
             <p><strong>Nombre:</strong> {{ nombre }} {{ apellido }}</p>
             <p><strong>Email:</strong> {{ email }}</p>
-            <p><strong>Fecha de Nacimiento:</strong> {{ fecha_nacimiento }}</p>
+            <p><strong>Fecha de Nacimiento:</strong> {{ fecha_nacimiento }} [<strong>Edad:</strong> {{ edad }} años]</p>
             <p><strong>Teléfono:</strong> {{ telefono }}</p>
             <p><strong>RUT:</strong> {{ rut }}</p>
             <p><strong>Carrera:</strong> {{ carrera|default:"NO INFORMADA AÚN" }}</p>
         </div>
+        <br>
+        <a href="/oficial/"><button class="btn-action">Volver al panel</button></a>
         </section>
     </main>
 </body>
