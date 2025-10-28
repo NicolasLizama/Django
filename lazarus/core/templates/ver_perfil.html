@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi perfil</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+    </head>
+    <body>
+    <main class="home-wrapper">
+        <section class="home-box">
+        <h1>Perfil de {{ nombre }}</h1>
+        <div class="profile-info">
+            <p><strong>Nombre:</strong> {{ nombre }} {{ apellido }}</p>
+            <p><strong>Email:</strong> {{ email }}</p>
+            <p><strong>Fecha de Nacimiento:</strong> {{ fecha_nacimiento }}</p>
+            <p><strong>Teléfono:</strong> {{ telefono }}</p>
+            <p><strong>RUT:</strong> {{ rut }}</p>
+            <p><strong>Carrera:</strong> {{ carrera|default:"NO INFORMADA AÚN" }}</p>
+        </div>
+        </section>
+    </main>
+</body>
+</html>

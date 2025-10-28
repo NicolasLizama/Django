@@ -38,6 +38,7 @@ urlpatterns = [
     path('TestRecco_enviar/', views.TestRecco_enviar, name='TestRecco_enviar'),
     path('logout_view/', views.logout_view,),
     path('ver_test/', views.ver_test, name='ver_test'),
+    path('ver_perfil/', views.ver_perfil, name='ver_perfil')
 ]
 
 

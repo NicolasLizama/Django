@@ -227,6 +227,35 @@ def ver_test(request):
     except Exception as e:
         print("Error al cargar resultados:", e)
         return redirect('/fail')
+    
+@supabase_login_required
+def ver_perfil(request):
+    email_usuario = request.session.get("email")
+    if not email_usuario:
+        return redirect('/fail')
+
+    try:
+        # Obtener los datos del usuario desde la tabla 'usuarios'
+        usuario_query = supabase.table("usuarios").select("*").eq("email", email_usuario).execute()
+        if not usuario_query.data:
+            return redirect('/fail')
+
+        usuario_data = usuario_query.data[0]
+        context = {
+            "nombre": usuario_data["nombre"],
+            "apellido": usuario_data["apellido"],
+            "email": usuario_data["email"],
+            "fecha_nacimiento": usuario_data["fecha_nacimiento"],
+            "telefono": usuario_data["telefono"],
+            "rut": usuario_data["rut"],
+            "id_carrera": usuario_data["id_carrera"],
+        }
+
+        return render(request, "ver_perfil.html", context)
+
+    except Exception as e:
+        print("Error al cargar el perfil:", e)
+        return redirect('/fail')
 
 # ==========================================================
 # 📋 TEST DE RECONOCIMIENTO
@@ -266,7 +295,7 @@ def TestRecco_enviar(request):
                 return redirect('/fail')
 
             id_usuario = usuario_query.data[0]["id_usuario"]
-
+ 
             # Crear el diccionario de datos para la tabla Test_reconocimiento
             data = {
                 "id_usuario": id_usuario,

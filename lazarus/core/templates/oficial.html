@@ -36,12 +36,14 @@
           <button type="submit" class="btn-action">Ver Tests Realizados</button>
         </form>
 
-
         <form action="/logout_view/" method="get">
           <button type="submit" class="btn-logout">Cerrar sesión</button>
         </form>
       </div>
     </section>
   </main>
+
+  <!-- Botón en la esquina para ver el perfil -->
+  <a href="{% url 'ver_perfil' %}" class="btn-profile">Ver mi perfil</a>
 </body>
 </html>
