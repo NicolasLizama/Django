@@ -25,7 +25,16 @@ def paginator(request):
     return render(request, 'ingreso.html')
 
 def paginator2(request):
-    return render(request, 'CrearUsuario.html')
+    try:
+        # Obtener las carreras de la base de datos
+        response = supabase.table("carrera").select("id_carrera, nombre_carrera").execute()
+        carreras = response.data if response.data else []
+        
+        # Renderizar la página y pasar las carreras al contexto
+        return render(request, 'CrearUsuario.html', {"carreras": carreras})
+    except Exception as e:
+        print("Error al obtener carreras:", e)
+        return render(request, 'CrearUsuario.html', {"carreras": []})
 
 def paginatorfail(request):
     return render(request, 'fail.html')
@@ -45,12 +54,13 @@ def usercreate(request):
         fecha_nacimiento = request.POST.get('fecha_nacimiento')
         telefono = request.POST.get('telefono')
         password = request.POST.get('password')
+        id_carrera = request.POST.get('id_carrera')  # Obtener la carrera seleccionada
 
         try:
             response = supabase.auth.sign_up({
                 "email": email,
                 "password": password,
-                "options": {"data": {"nombre": nombre, "apellido": apellido}},
+                "options": {"data": {"nombre": nombre, "apellido": apellido}} 
             })
 
             if response.user:
@@ -61,7 +71,9 @@ def usercreate(request):
                     "fecha_nacimiento": fecha_nacimiento,
                     "telefono": telefono,
                     "rut": rut,
+                    "id_carrera": id_carrera  # Incluir la carrera seleccionada
                 }
+                # Insertar los datos del usuario incluyendo la carrera
                 supabase.table("usuarios").insert(data).execute()
             else:
                 return redirect('/crear')
@@ -69,6 +81,7 @@ def usercreate(request):
             print(e)
             return redirect('/crear')
     return redirect('/')
+
 
 # ==========================================================
 # 🔐 DECORADOR: PROTECCIÓN POR TOKEN DE SUPABASE

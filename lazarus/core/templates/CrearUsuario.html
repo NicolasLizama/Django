@@ -51,6 +51,17 @@
           <input type="password" id="password" name="password" placeholder="Crea una contraseña segura" required>
         </div>
 
+        <div class="form-group">
+          <label for="id_carrera">Carrera</label>
+          <select id="id_carrera" name="id_carrera" required>
+            <option value="" disabled selected>Selecciona tu carrera</option>
+            {% for carrera in carreras %}
+              <option value="{{ carrera.id_carrera }}">{{ carrera.nombre_carrera }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+
         <button type="submit" class="btn-login">Crear cuenta</button>
 
         {% if error_message %}
