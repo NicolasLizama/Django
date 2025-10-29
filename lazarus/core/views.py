@@ -428,6 +428,15 @@ def phq9_enviar(request):
 
         supabase.table("phq_9").insert(data).execute()
         return redirect('/oficial')
+    
+# ==========================================================
+# 📧 Super test
+# ==========================================================    
+@supabase_login_required
+def super_test(request):
+   # nombre = request.session.get("nombre", "Usuario")
+    return render(request, "super_test.html")
+
 
 # ==========================================================
 # 📧 RECUPERAR CONTRASEÑA

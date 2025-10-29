@@ -19,6 +19,11 @@
           <button type="submit" class="btn-action">Reconocimiento</button>
         </form>
 
+        <form action="{% url 'super_test' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn-action">Realizar super Test</button>
+        </form>
+
         <form action="{% url 'gad7' %}" method="post">
           {% csrf_token %}
           <button type="submit" class="btn-action">Realizar GAD 7 Ansiedad</button>

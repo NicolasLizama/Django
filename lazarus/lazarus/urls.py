@@ -36,6 +36,7 @@ urlpatterns = [
     path('gad7_enviar/', views.gad7_enviar, name='gad7_enviar'),
     path('Test_reconocimiento', views.Test_reconocimiento, name='Test_reconocimiento'),
     path('TestRecco_enviar/', views.TestRecco_enviar, name='TestRecco_enviar'),
+    path('super_test/', views.super_test, name='super_test'),
     path('logout_view/', views.logout_view,),
     path('ver_test/', views.ver_test, name='ver_test'),
     path('ver_perfil/', views.ver_perfil, name='ver_perfil')
