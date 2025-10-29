@@ -255,6 +255,16 @@ def ver_perfil(request):
 
         usuario_data = usuario_query.data[0]
         
+        # Obtener el id_carrera del usuario
+        id_carrera = usuario_data.get("id_carrera")
+        carrera_nombre = "NO INFORMADA AÚN"  # Valor por defecto en caso de que no tenga carrera asignada
+
+        if id_carrera:
+            # Obtener el nombre de la carrera desde la tabla 'carrera'
+            carrera_query = supabase.table("carrera").select("nombre_carrera").eq("id_carrera", id_carrera).execute()
+            if carrera_query.data:
+                carrera_nombre = carrera_query.data[0].get("nombre_carrera")
+
         # Convertir la fecha de nacimiento de varchar a datetime
         fecha_nacimiento_str = usuario_data["fecha_nacimiento"]
         fecha_nacimiento = datetime.strptime(fecha_nacimiento_str, "%Y-%m-%d")  # Formato adecuado para '2000-11-01'
@@ -263,7 +273,7 @@ def ver_perfil(request):
         today = datetime.today()
         edad = today.year - fecha_nacimiento.year - ((today.month, today.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
 
-        # Agregar al contexto la fecha de nacimiento y la edad
+        # Agregar al contexto la fecha de nacimiento, la edad y la carrera
         context = {
             "nombre": usuario_data["nombre"],
             "apellido": usuario_data["apellido"],
@@ -272,6 +282,7 @@ def ver_perfil(request):
             "edad": edad,  # Edad calculada
             "telefono": usuario_data["telefono"],
             "rut": usuario_data["rut"],
+            "carrera": carrera_nombre,  # Carrera del usuario
         }
 
         return render(request, "ver_perfil.html", context)
