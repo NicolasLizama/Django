@@ -11,7 +11,7 @@
     <h1>Habitos y estilo de vida</h1>
 
     <div class="form-container">
-        <form action="/" method="POST">
+        <form action="/estilo_vida_enviar/" method="POST">
             {% csrf_token %}
             
             <h1 class="titulo">Super test</h1>
@@ -23,7 +23,7 @@
 
             <div class="form-group">
                 <strong>¿Consumes frutas y vegetales?</strong>
-                <input name="" placeholder="tratamiento psicologico " type="text" id="tratamiento_psicologico" required>
+                <input name="frutas_vegetales" placeholder="frutas-vegetales" type="text" id="frutas_vegetales" required>
             </div>
 
             <div class="form-group">

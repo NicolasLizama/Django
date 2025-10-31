@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salud fisica</title>
+    <title>mejor andate</title>
     <link rel="stylesheet" href="{% static 'css/test_style.css' %}">
 </head>
 <body>
-    <h1>Salud física</h1>
+    <h1>Andate lo demas no si poner mas</h1>
 
     <div class="form-container">
-        <form action="/salud_fisica_enviar/" method="POST">
+        <form action="/" method="POST">
             {% csrf_token %}
             
             <h1 class="titulo">Super test</h1>
@@ -59,7 +59,7 @@
                 <div class="error-message">{{ error_message }}</div>    
             {% endif %}
 
-            <div class="volver">
+            <div class="mejor vuelve que no se si seguir">
                 <a href="/" class="link">Volver</a>
             </div>
         </form>

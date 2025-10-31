@@ -640,6 +640,106 @@ def vida_academica_enviar(request):
 
     return render(request, "vida_academica.html")
 
+@supabase_login_required
+def super_test_5(request):
+   # nombre = request.session.get("nombre", "Usuario")
+    return render(request, "super_test5.html")
+
+def estilo_vida_enviar(request):
+    if request.method == "POST":
+        email_usuario = request.session.get("email") or request.session.get("nombre")
+        if not email_usuario:
+            return redirect('/fail')
+
+        # Buscar el id_usuario en Supabase
+        usuario_query = supabase.table("usuarios").select("id_usuario").eq("email", email_usuario).execute()
+        if not usuario_query.data:
+            return redirect('/fail')
+
+        id_usuario = usuario_query.data[0]["id_usuario"]
+
+        # Capturar datos del formulario
+        horas_sueño = request.POST.get("horas_sueño")
+        frutas_vegetales = request.POST.get("frutas_vegetales")
+        consumo_alcohol = request.POST.get("consumo_alcohol")
+        fumar = request.POST.get("fumar")
+        ejercicio = request.POST.get("ejercicio")
+        horario_alimentacion = request.POST.get("horario_alimentacion")
+        estado_peso = request.POST.get("estado_peso")
+
+        # Estructura para insertar en Supabase
+        data = {
+            "horas_sueño": horas_sueño,
+            "frutas_vegetales": frutas_vegetales,
+            "consumo_alcohol": consumo_alcohol,
+            "fumar": fumar,
+            "ejercicio": ejercicio,
+            "horario_alimentacion": horario_alimentacion,
+            "estado_peso": estado_peso,
+            "id_usuario": id_usuario
+        }
+
+        try:
+            supabase.table("estilo_vida").insert(data).execute()
+            # Redirigir a super_test_5 usando el name de la URL
+            return redirect("super_test_5")
+        except Exception as e:
+            print("Error al guardar en Supabase:", e)
+            return render(request, "estilo_vida.html", {"error_message": "Error al guardar los datos."})
+
+    return render(request, "estilo_vida.html")
+
+@supabase_login_required
+def super_test_6(request):
+   # nombre = request.session.get("nombre", "Usuario")
+    return render(request, "super_test6.html")
+
+
+def seguridad_autoestima_enviar(request):
+    if request.method == "POST":
+        # Obtener correo o nombre de sesión
+        email_usuario = request.session.get("email") or request.session.get("nombre")
+        if not email_usuario:
+            return redirect('/fail')
+
+        # Buscar id_usuario en Supabase
+        usuario_query = supabase.table("usuarios").select("id_usuario").eq("email", email_usuario).execute()
+        if not usuario_query.data:
+            return redirect('/fail')
+
+        id_usuario = usuario_query.data[0]["id_usuario"]
+
+        # Capturar datos del formulario
+        autoestima = request.POST.get("autoestima")
+        inseguiridades = request.POST.get("inseguiridades")
+        logros_personales = request.POST.get("logros_personales")
+        debilidades = request.POST.get("debilidades")
+        miedos = request.POST.get("miedos")
+        opinion_vida = request.POST.get("opinion_vida")
+        objetivo = request.POST.get("objetivo")
+
+        # Preparar datos para inserción
+        data = {
+            "autoestima": autoestima,
+            "inseguiridades": inseguiridades,
+            "logros_personales": logros_personales,
+            "debilidades": debilidades,
+            "miedos": miedos,
+            "opinion_vida": opinion_vida,
+            "objetivo": objetivo,
+            "id_usuario": id_usuario
+        }
+
+        try:
+            supabase.table("seguridad_autoestima").insert(data).execute()
+            # Redirigir a super_test_6 usando el name de la URL
+            return redirect("super_test_6")
+        except Exception as e:
+            print("Error al guardar en Supabase:", e)
+            return render(request, "seguridad_autoestima.html", {"error_message": "Error al guardar los datos."})
+
+    return render(request, "seguridad_autoestima.html")
+
 
 
 # ==========================================================
