@@ -46,7 +46,12 @@ urlpatterns = [
 
     path('super_test_2/', views.super_test_2, name='super_test_2'),
     path('salud_fisica_enviar/', views.salud_fisica_enviar, name='salud_fisica_enviar'),
-    
+
+    path('super_test_3/', views.super_test_3, name='super_test_3'),
+    path('salud_mental_enviar/', views.salud_mental_enviar, name='salud_mental_enviar'),
+
+    path('super_test_4/', views.super_test_4, name='super_test_4'),
+    path('vida_academica_enviar/', views.vida_academica_enviar, name='vida_academica_enviar'),
 
 
 

@@ -542,6 +542,103 @@ def salud_fisica_enviar(request):
     # Si no es POST, renderiza el formulario
     return render(request, "oficial.html")
 
+@supabase_login_required
+def super_test_3(request):
+   # nombre = request.session.get("nombre", "Usuario")
+    return render(request, "super_test3.html")
+
+def salud_mental_enviar(request):
+    if request.method == "POST":
+        email_usuario = request.session.get("email") or request.session.get("nombre")
+        if not email_usuario:
+            return redirect('/fail')
+
+        # Buscar id_usuario en Supabase
+        usuario_query = supabase.table("usuarios").select("id_usuario").eq("email", email_usuario).execute()
+        if not usuario_query.data:
+            return redirect('/fail')
+
+        id_usuario = usuario_query.data[0]["id_usuario"]
+
+        # Obtener los valores del formulario
+        opinion_salud_mental = request.POST.get("opinion_psicologica")
+        tratamiento_psicologico = request.POST.get("tratamiento_psicologico")
+        estado_critico = request.POST.get("estado_critico")
+        tendecia_critica = request.POST.get("Tendecia_critica")
+        acciones_autoinflictivas = request.POST.get("Acciones_autoinflictivas")
+        autogestion = request.POST.get("autogestion")
+        autocalificacion = request.POST.get("autocalificacion")
+
+        # Crear el registro para insertar
+        data = {
+            "opinion_salud_mental": opinion_salud_mental,
+            "tratamiento_psicologico": tratamiento_psicologico,
+            "estado_critico": estado_critico,
+            "tendecia_critica": tendecia_critica,
+            "acciones_autoinflictivas": acciones_autoinflictivas,
+            "autogestion": autogestion,
+            "autocalificacion": autocalificacion,
+            "id_usuario": id_usuario
+        }
+
+        try:
+            supabase.table("salud_mental").insert(data).execute()
+            # Redirigir a super_test_3 usando el name de la URL
+            return redirect("super_test_3")
+        except Exception as e:
+            print("Error al guardar en Supabase:", e)
+            return render(request, "mental.html", {"error_message": "Error al guardar los datos."})
+
+    return render(request, "mental.html")
+
+
+@supabase_login_required
+def super_test_4(request):
+   # nombre = request.session.get("nombre", "Usuario")
+    return render(request, "super_test4.html")
+
+
+def vida_academica_enviar(request):
+    if request.method == "POST":
+        email_usuario = request.session.get("email") or request.session.get("nombre")
+        if not email_usuario:
+            return redirect('/fail')
+
+        # Buscar id_usuario en Supabase
+        usuario_query = supabase.table("usuarios").select("id_usuario").eq("email", email_usuario).execute()
+        if not usuario_query.data:
+            return redirect('/fail')
+
+        id_usuario = usuario_query.data[0]["id_usuario"]
+
+        # Obtener los valores del formulario
+        rendimiento_anual = request.POST.get("rendimiento_anual")
+        dificultades_academicas = request.POST.get("dificultades_academicas")
+        relacion_academica = request.POST.get("relacion_academica")
+        seguridad_aprendida = request.POST.get("seguridad_aprendida")
+        autoestudio = request.POST.get("autoestudio")
+        autosugerencia = request.POST.get("autosugerencia")
+
+        # Crear el registro para insertar
+        data = {
+            "rendimiento_anual": rendimiento_anual,
+            "dificultades_academicas": dificultades_academicas,
+            "relacion_academica": relacion_academica,
+            "seguridad_aprendida": seguridad_aprendida,
+            "autoestudio": autoestudio,
+            "autosugerencia": autosugerencia,
+            "id_usuario": id_usuario
+        }
+
+        try:
+            supabase.table("vida_academica").insert(data).execute()
+            # Redirigir a super_test_4 usando el name de la URL
+            return redirect("super_test_4")
+        except Exception as e:
+            print("Error al guardar en Supabase:", e)
+            return render(request, "vida_academica.html", {"error_message": "Error al guardar los datos."})
+
+    return render(request, "vida_academica.html")
 
 
 
