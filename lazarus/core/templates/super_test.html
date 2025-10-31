@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="{% static 'css/test_style.css' %}">
 </head>
 <body>
-    <h1>Dinos todo, te vamos a dataminear</h1>
+    <h1>Dinos todo, te vamos a dataminear con datos familiares</h1>
 
     <div class="form-container">
-        <form action="/" method="POST">
+        <form action="/situacion_familiar_enviar/" method="POST">
             {% csrf_token %}
             
             <h1 class="titulo">Super test</h1>

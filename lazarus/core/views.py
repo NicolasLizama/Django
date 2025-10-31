@@ -291,6 +291,10 @@ def ver_perfil(request):
         print("Error al cargar el perfil:", e)
         return redirect('/fail')
     
+
+
+
+    
 # ==========================================================
 # 📋 TEST DE RECONOCIMIENTO
 # ==========================================================
@@ -394,6 +398,7 @@ def gad7_enviar(request):
 # ==========================================================
 # 🔄 TEST PHQ-9
 # ==========================================================
+
 def phq9_enviar(request):
     if request.method == "POST":
         email_usuario = request.session.get("email") or request.session.get("nombre")
@@ -432,10 +437,112 @@ def phq9_enviar(request):
 # ==========================================================
 # 📧 Super test
 # ==========================================================    
+
 @supabase_login_required
 def super_test(request):
    # nombre = request.session.get("nombre", "Usuario")
     return render(request, "super_test.html")
+
+@supabase_login_required
+def situacion_familiar_enviar(request):
+    if request.method == "POST":
+        # Obtener email del usuario logueado
+        email_usuario = request.session.get("email") or request.session.get("nombre")
+        if not email_usuario:
+            return redirect('/fail')
+
+        # Buscar id_usuario en Supabase
+        usuario_query = supabase.table("usuarios").select("id_usuario").eq("email", email_usuario).execute()
+        if not usuario_query.data:
+            return redirect('/fail')
+        id_usuario = usuario_query.data[0]["id_usuario"]
+
+        # Preparar los datos del formulario
+        data = {
+            "id_usuario": id_usuario,
+            "estado_civil": request.POST.get("Estado_civil"),
+            "convivencia": request.POST.get("convivencia"),
+            "apoyo_familiar": request.POST.get("Apoyo"),
+            "problema_familiar": request.POST.get("problema_familiar"),
+            "relacion_familiar": request.POST.get("relacion_familiar"),
+        }
+
+        # Insertar en la tabla situacion_familiar
+        response = supabase.table("situacion_familiar").insert(data).execute()
+
+        # Verificar errores de inserción
+        if hasattr(response, "error") and response.error:
+            return render(request, "super_test.html", {"error_message": "Error al guardar los datos."})
+
+        return redirect('/super_test_1')
+
+    # Si el método no es POST
+    return redirect('/fail')
+
+
+@supabase_login_required
+def super_test_1(request):
+   # nombre = request.session.get("nombre", "Usuario")
+    return render(request, "super_test1.html")
+
+
+
+@supabase_login_required
+def super_test_2(request):
+   # nombre = request.session.get("nombre", "Usuario")
+    return render(request, "super_test2.html")
+
+def salud_fisica_enviar(request):
+    if request.method == "POST":
+        # Obtener email o nombre del usuario desde la sesión
+        email_usuario = request.session.get("email") or request.session.get("nombre")
+        if not email_usuario:
+            return redirect('/fail')
+
+        # Buscar id_usuario en la tabla usuarios
+        usuario_query = supabase.table("usuarios").select("id_usuario").eq("email", email_usuario).execute()
+        if not usuario_query.data:
+            return redirect('/fail')
+
+        id_usuario = usuario_query.data[0]["id_usuario"]
+
+        # Capturar datos del formulario
+        salud_fisica = request.POST.get("salud_fisica")
+        consumo_medicamentos = request.POST.get("consumo_medicamentos")
+        alergias = request.POST.get("alergias")
+        problemas_vision = request.POST.get("problemas_vision")
+        problemas_audicion = request.POST.get("problemas_audicion")
+        ejercicio = request.POST.get("ejercicio")
+        hospitalizaciones_cirugias = request.POST.get("hospitalizaciones")
+
+        # Validar datos obligatorios
+        if not salud_fisica:
+            return render(request, "oficial.html", {"error_message": "Debes ingresar tu estado de salud."})
+
+        # Crear diccionario para insertar
+        data = {
+            "salud_fisica": salud_fisica,
+            "consumo_medicamentos": consumo_medicamentos,
+            "alergias": alergias,
+            "problemas_vision": problemas_vision,
+            "problemas_audicion": problemas_audicion,
+            "ejercicio": ejercicio,
+            "hospitalizaciones_cirugias": hospitalizaciones_cirugias,
+            "id_usuario": id_usuario
+        }
+
+        try:
+            supabase.table("salud_fisica").insert(data).execute()
+            # Redirigir a super_test_2 usando el name de la URL
+            return redirect("super_test_2")
+        except Exception as e:
+            print("Error al guardar en Supabase:", e)
+            return render(request, "oficial.html", {"error_message": "Error al guardar los datos."})
+
+    # Si no es POST, renderiza el formulario
+    return render(request, "oficial.html")
+
+
 
 
 # ==========================================================

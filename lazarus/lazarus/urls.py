@@ -36,7 +36,28 @@ urlpatterns = [
     path('gad7_enviar/', views.gad7_enviar, name='gad7_enviar'),
     path('Test_reconocimiento', views.Test_reconocimiento, name='Test_reconocimiento'),
     path('TestRecco_enviar/', views.TestRecco_enviar, name='TestRecco_enviar'),
+
+
     path('super_test/', views.super_test, name='super_test'),
+    path('situacion_familiar_enviar/', views.situacion_familiar_enviar, name='situacion_familiar_enviar'),
+    path('super_test_1/', views.super_test_1, name='super_test_1'),
+
+
+
+    path('super_test_2/', views.super_test_2, name='super_test_2'),
+    path('salud_fisica_enviar/', views.salud_fisica_enviar, name='salud_fisica_enviar'),
+    
+
+
+
+
+
+
+
+
+
+
+
     path('logout_view/', views.logout_view,),
     path('ver_test/', views.ver_test, name='ver_test'),
     path('ver_perfil/', views.ver_perfil, name='ver_perfil')
