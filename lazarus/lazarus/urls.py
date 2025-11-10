@@ -25,6 +25,7 @@ urlpatterns = [
     path('introduccion/', views.introduccion, name='introduccion'),
     path('ingresar/', views.ingresar),
     path('crear/', views.paginator2),
+    path('medico_vista/', views.medico_vista),
     path('recuperar_contraseña/', views.recuperar_contraseña, name='recuperar_contraseña'),
    # path('mostrarCambioPassword/', views.mostrarCambioPassword, name='mostrarCambioPassword'),
    # path('HacercambiarPassword/', views.HacercambiarPassword, name='HacercambiarPassword'), 

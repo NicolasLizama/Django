@@ -111,28 +111,91 @@ def ingresar(request):
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
+        perfil = request.POST.get('perfil')
 
         try:
+            # Autenticación con Supabase Auth
             session = supabase.auth.sign_in_with_password({
                 "email": email,
                 "password": password
             })
 
-            if session.user:
-                request.session["supabase_user"] = session.user.id
-                request.session["access_token"] = session.session.access_token
-                request.session["refresh_token"] = session.session.refresh_token
-                request.session["nombre"] = session.user.user_metadata.get("nombre", session.user.email)
-                request.session["email"] = session.user.email
+            if not session.user:
+                return redirect('/fail')
+
+            # Guardamos los datos básicos de sesión
+            request.session["supabase_user"] = session.user.id
+            request.session["access_token"] = session.session.access_token
+            request.session["refresh_token"] = session.session.refresh_token
+            request.session["nombre"] = session.user.user_metadata.get("nombre", session.user.email)
+            request.session["email"] = session.user.email
+            request.session["perfil"] = perfil
+
+            # Validar si es médico
+            if perfil == "medico":
+                medico_query = supabase.table("medico").select("correo").eq("correo", email).execute()
+
+                if not medico_query.data:
+                    print("El correo no pertenece a un médico registrado.")
+                    return redirect('/fail')
+
+                # ✅ Si está en la tabla medico, redirigir a su vista
+                return redirect('/medico_vista')
+
+            # ✅ Si es estudiante, redirigir a su vista oficial
+            elif perfil == "estudiante":
+                return redirect('/oficial')
+
+            else:
+                print("Perfil inválido.")
+                return redirect('/fail')
+
         except Exception as e:
-            print(e)
+            print("Error de inicio de sesión:", e)
             return redirect('/fail')
 
-    return redirect('/oficial')
+    # Si no es POST, volver al login
+    return redirect('/login')
+
 
 # ==========================================================
 # 🏠 PÁGINAS PROTEGIDAS
 # ==========================================================
+
+@supabase_login_required
+def medico_vista(request):
+    nombre = request.session.get("nombre", "Usuario")
+
+    try:
+        usuarios_query = supabase.table("usuarios").select("id_usuario, nombre, apellido, id_carrera").execute()
+        print("Resultado de Supabase:", usuarios_query.data)
+
+        usuarios_data = usuarios_query.data or []
+
+        for u in usuarios_data:
+            carrera_id = u.get("id_carrera")
+            if carrera_id:
+                carrera_query = supabase.table("carrera").select("nombre_carrera").eq("id_carrera", carrera_id).execute()
+                if carrera_query.data:
+                    u["carrera"] = carrera_query.data[0]["nombre_carrera"]
+                else:
+                    u["carrera"] = "No registrada"
+            else:
+                u["carrera"] = "No asignada"
+
+    except Exception as e:
+        print("Error al obtener usuarios:", e)
+        usuarios_data = []
+
+    return render(request, "medico.html", {
+        "nombre": nombre,
+        "usuarios": usuarios_data
+    })
+
+
+    
+
+
 @supabase_login_required
 def oficial(request):
     nombre = request.session.get("nombre", "Usuario")
