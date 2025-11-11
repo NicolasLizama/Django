@@ -42,6 +42,10 @@ def paginatorfail(request):
 def introduccion(request):
     return render(request, 'introduccion.html')
 
+#Esta es cuando obtiene la respuesta del correo
+def mostrarCambioPassword(request):
+    return render(request, 'CambioPass.html')
+
 # ==========================================================
 # 👤 REGISTRO DE USUARIO
 # ==========================================================
@@ -156,6 +160,7 @@ def ingresar(request):
 
     # Si no es POST, volver al login
     return redirect('/login')
+
 
 
 # ==========================================================
@@ -805,8 +810,20 @@ def seguridad_autoestima_enviar(request):
 
 
 
+
+
 # ==========================================================
-# 📧 RECUPERAR CONTRASEÑA
+# 🚪 CERRAR SESIÓN
+# ==========================================================
+def logout_view(request):
+    request.session.flush()
+    return redirect('/')
+
+
+
+
+# ==========================================================
+# Mandar correo token recuperar contraseña
 # ==========================================================
 def recuperar_contraseña(request):
     if request.method == "POST":
@@ -830,58 +847,47 @@ def recuperar_contraseña(request):
     return render(request, 'recuperar_contraseña.html')
 
 # ==========================================================
-# 🚪 CERRAR SESIÓN
+#  Cambiar contraseña
 # ==========================================================
-def logout_view(request):
-    request.session.flush()
+def HacercambiarPassword(request):
+    """
+    Cambia la contraseña del usuario autenticado mediante el token
+    recibido en el enlace de recuperación enviado por Supabase.
+    Si el cambio es exitoso, mantiene iniciada la sesión.
+    """
+    if request.method == "POST":
+        token = request.POST.get("token")
+        nueva_contrasena = request.POST.get("password")
+
+        if not token or not nueva_contrasena:
+            return render(request, 'reset_password.html', {
+                "error": "Faltan datos para cambiar la contraseña."
+            })
+
+        try:
+            # 1️⃣ Establecer sesión temporal usando el token de recuperación
+            session = supabase.auth.set_session(access_token=token, refresh_token=token)
+
+            # 2️⃣ Cambiar la contraseña
+            user = supabase.auth.update_user({"password": nueva_contrasena}).user
+
+            # 3️⃣ Guardar sesión en Django (igual que al ingresar)
+            request.session["supabase_user"] = user.id
+            request.session["access_token"] = session.session.access_token
+            request.session["refresh_token"] = session.session.refresh_token
+            request.session["email"] = user.email
+            request.session["nombre"] = user.user_metadata.get("nombre", user.email)
+            
+
+            # 4️⃣ Redirigir a la vista principal (según perfil)
+            return redirect('/oficial')
+
+        except Exception as e:
+            print("Error al cambiar contraseña:", e)
+            return render(request, 'fail.html', {
+                "error": "No se pudo cambiar la contraseña. Intenta nuevamente."
+            })
+
     return redirect('/')
 
-# ==========================================================
-# 💤 FUNCIONES DE CAMBIO DE CONTRASEÑA (NO EN USO ACTUALMENTE)
-# ==========================================================
-# --- 1. Mostrar la página de cambio de contraseña ---
-# def mostrarCambioPassword(request):
-#     token = request.GET.get("access_token")  # token enviado por Supabase en el link
-#
-#     if not token:
-#         # Si no hay token, redirige al inicio
-#         return redirect('/')
-#
-#     # Si hay token, muestra la página cambioPass.html
-#     return render(request, 'CambioPass.html', {"token": token})
-#
-#
-# --- 2. Procesar el cambio de contraseña ---
-# def HacercambiarPassword(request):
-#     if request.method == "POST":
-#         token = request.POST.get("token")
-#         nueva_contrasena = request.POST.get("password")
-#
-#         if not token or not nueva_contrasena:
-#             return render(request, 'recuperar_contraseña.html', {
-#                 "error": "Faltan datos para cambiar la contraseña."
-#             })
-#
-#         try:
-#             # Actualizar la contraseña en Supabase usando el token
-#             supabase.auth.update_user({"password": nueva_contrasena}, access_token=token)
-#             return render(request, 'recuperar_contraseña.html', {
-#                 "success": "Contraseña cambiada correctamente. Ya puedes iniciar sesión."
-#             })
-#         except Exception as e:
-#             print("Error al cambiar contraseña:", e)
-#             return render(request, 'recuperar_contraseña.html', {
-#                 "error": "No se pudo cambiar la contraseña. Intenta nuevamente."
-#             })
-#
-#     # Si no es POST, vuelve al inicio
-#     return redirect('/')
-#
-#
-# --- Función de salida (no funcional actualmente) ---
-# def salir(request):
-#     try:
-#         del request.session['uid']
-#     except KeyError:
-#         pass
-#     return redirect('/')
+
