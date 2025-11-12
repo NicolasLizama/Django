@@ -382,7 +382,6 @@ def Test_reconocimiento(request):
 @supabase_login_required
 def TestRecco_enviar(request):
     if request.method == "POST":
-        carrera = request.POST.get('carrera')
         motivo_estudio = request.POST.get('motivo_estudio')
         año_estudio = request.POST.get('año_estudio')
         intereses = request.POST.get('intereses')
@@ -405,7 +404,6 @@ def TestRecco_enviar(request):
             # Crear el diccionario de datos para la tabla Test_reconocimiento
             data = {
                 "id_usuario": id_usuario,
-                "carrera": carrera,
                 "motivo_estudio": motivo_estudio,
                 "año_estudio": año_estudio,
                 "intereses": intereses,
@@ -801,7 +799,7 @@ def seguridad_autoestima_enviar(request):
         try:
             supabase.table("seguridad_autoestima").insert(data).execute()
             # Redirigir a super_test_6 usando el name de la URL
-            return redirect("super_test_6")
+            return redirect('/oficial')
         except Exception as e:
             print("Error al guardar en Supabase:", e)
             return render(request, "seguridad_autoestima.html", {"error_message": "Error al guardar los datos."})

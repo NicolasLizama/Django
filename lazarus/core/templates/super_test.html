@@ -32,16 +32,41 @@
             </div>
 
             <div class="form-group">
-                <strong>¿Sufres algun problema familiar en tu hogar?</strong>
-                <input name="problema_familiar" placeholder="problema" type="text" id="problema_familiar" required>
+                <strong>¿Sufres algún problema familiar en tu hogar?</strong><br>
+                <input name="problema_familiar" placeholder="Describe brevemente..." type="text" id="problema_familiar" required>
+                <label>
+                    <input type="checkbox" id="no_responder_problema" onclick="toggleInput('problema_familiar', this)">
+                    Prefiero no responder
+                </label>
             </div>
-
 
             <div class="form-group">
-                <strong>¿Como es tu relacion con tu familia?</strong>
-                <input name="relacion_familiar" placeholder="relacion familiar" type="text" id="relacion_familiar" required>
+                <strong>¿Cómo es tu relación con tu familia?</strong><br>
+                <input name="relacion_familiar" placeholder="Describe brevemente..." type="text" id="relacion_familiar" required>
+                <label>
+                    <input type="checkbox" id="no_responder_relacion" onclick="toggleInput('relacion_familiar', this)">
+                    Prefiero no responder
+                </label>
             </div>
 
+            <script>
+            function toggleInput(inputId, checkbox) {
+                const input = document.getElementById(inputId);
+
+                if (checkbox.checked) {
+                    // Marcar "Prefiero no responder": hacer readonly y quitar required
+                    input.value = "Prefiero no responder";
+                    input.readOnly = true;           // mantiene el valor pero evita edición
+                    input.removeAttribute('required'); // evita validación HTML
+                } else {
+                    // Volver a permitir respuesta libre: limpiar, habilitar y exigir si corresponde
+                    input.value = "";
+                    input.readOnly = false;
+                    input.setAttribute('required', ''); // vuelve a ser obligatorio
+                    input.focus();
+                }
+            }
+            </script>
 
             <button type="submit" id="button">Enviar</button>
 

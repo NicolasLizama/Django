@@ -17,9 +17,16 @@
             <h1 class="titulo">Super test</h1>
 
             <div class="form-group">
-                <strong>¿Cuantas horas duermes por noche?</strong>
-                <input name="horas_sueño" placeholder="horas de sueño" type="text" id="horas_sueño" required>
+                <strong>¿Cuántas horas duermes por noche?</strong>
+                <select name="horas_sueño" id="horas_sueño" required>
+                    <option value="" disabled selected>Selecciona un rango</option>
+                    <option value="menos de 5">Menos de 5 horas</option>
+                    <option value="entre 5 o 6">5 o 6 horas</option>
+                    <option value="7 o mas 8">entre 7 o 8 horas</option>
+                    <option value="9 o mas">9 o más horas</option>
+                </select>
             </div>
+
 
             <div class="form-group">
                 <strong>¿Consumes frutas y vegetales?</strong>
