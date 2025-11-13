@@ -27,18 +27,24 @@
         </div>
 
         <div class="form-group">
-          <label for="rut">RUT</label>
-          <input type="text" id="rut" name="rut" placeholder="Ej: 12.345.678-9" maxlength="12" required>
+          <label for="rut">RUT sin puntos ni guion</label>
+          <input type="text" id="rut" name="rut" placeholder="Ej: 123456789" maxlength="12" required>
         </div>
 
         <div class="form-group">
           <label for="fecha_nacimiento">Fecha de nacimiento</label>
           <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+          <small id="error_fecha" style="color: red; display: none;">
+            Por favor, debes tener al menos 16 años.
+          </small>
         </div>
 
         <div class="form-group">
           <label for="telefono">Teléfono</label>
-          <input type="text" id="telefono" name="telefono" placeholder="Ej: +56912345678" maxlength="11" required>
+          <input type="text" id="telefono" name="telefono" placeholder="Ej: 56912345678" maxlength="11" required>
+          <small id="error_telefono" style="color: red; display: none;">
+            El teléfono debe tener el formato 569XXXXXXXX.
+          </small>
         </div>
 
         <div class="form-group">
@@ -61,7 +67,6 @@
           </select>
         </div>
 
-
         <button type="submit" class="btn-login">Crear cuenta</button>
 
         {% if error_message %}
@@ -76,5 +81,9 @@
       </form>
     </section>
   </main>
+
+  <!-- ================== TU ARCHIVO JS SEPARADO ================== -->
+  <script src="{% static 'js/validaciones_registro.js' %}"></script>
+
 </body>
 </html>

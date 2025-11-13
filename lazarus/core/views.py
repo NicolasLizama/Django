@@ -798,7 +798,7 @@ def seguridad_autoestima_enviar(request):
 
         try:
             supabase.table("seguridad_autoestima").insert(data).execute()
-            # Redirigir a super_test_6 usando el name de la URL
+            # Redirigir pagina principal
             return redirect('/oficial')
         except Exception as e:
             print("Error al guardar en Supabase:", e)
