@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ nombre }} - Estudiantes</title>
+    <title>Vision general estudiantes</title>
     <link rel="stylesheet" href="{% static 'css/stylemedico.css' %}">
 </head> 
 <body>
@@ -51,6 +51,14 @@
         <form action="/logout_view/" method="get">
             <button type="submit" class="btn-logout">Cerrar sesión</button>
         </form>
+
+        <form action="/medico_vista/" method="get">
+            <button type="submit" class="btn-logout">Volver panel</button>
+        </form>
     </div>
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+
 </body>
 </html>

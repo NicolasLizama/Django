@@ -61,6 +61,7 @@ urlpatterns = [
     path('seguridad_autoestima_enviar/', views.seguridad_autoestima_enviar, name='seguridad_autoestima_enviar'),
 
 
+    path('evaluar_test/<uuid:id_usuario>/', views.evaluar_test, name='evaluar_test'),
 
 
 

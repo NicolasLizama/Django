@@ -889,3 +889,58 @@ def HacercambiarPassword(request):
     return redirect('/')
 
 
+def evaluar_test(request, id_usuario):
+    try:
+        usuario = supabase.table("usuarios").select("*") \
+            .eq("id_usuario", str(id_usuario)).single().execute().data
+
+        if not usuario:
+            return render(request, "medico.html", {
+                "error": "El usuario no existe."
+            })
+
+        
+        test_reconocimiento = supabase.table("Test_reconocimiento").select("*") \
+            .eq("id_usuario", str(id_usuario)).maybe_single().execute().data
+
+        situacion_familiar = supabase.table("situacion_familiar").select("*") \
+            .eq("id_usuario", str(id_usuario)).maybe_single().execute().data
+
+        autoestima = supabase.table("seguridad_autoestima").select("*") \
+            .eq("id_usuario", str(id_usuario)).maybe_single().execute().data
+
+        salud_mental = supabase.table("salud_mental").select("*") \
+            .eq("id_usuario", str(id_usuario)).maybe_single().execute().data
+
+        salud_fisica = supabase.table("salud_fisica").select("*") \
+            .eq("id_usuario", str(id_usuario)).maybe_single().execute().data
+
+        # Si no hay ningún test → vuelve a medico.html
+        if not any([
+            test_reconocimiento,
+            situacion_familiar,
+            autoestima,
+            salud_mental,
+            salud_fisica
+        ]):
+            return render(request, "medico.html", {
+                "error": "Este estudiante no tiene ningún test registrado."
+            })
+
+        # Render normal si hay datos
+        return render(request, "resultadosindi.html", {
+            "usuario": usuario,
+            "test_reconocimiento": test_reconocimiento,
+            "situacion_familiar": situacion_familiar,
+            "autoestima": autoestima,
+            "salud_mental": salud_mental,
+            "salud_fisica": salud_fisica,
+        })
+
+    except Exception:
+        return render(request, "medico.html", {
+            "error": "Ocurrió un error al cargar los datos."
+        })
+
+
+    

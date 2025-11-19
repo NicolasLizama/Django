@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados del Estudiante</title>
+    <link rel="stylesheet" href="{% static 'css/resultadosindi.css' %}">
+</head>
+<body>
+
+    <h1 style="text-align:center;">Resultados del Estudiante {{ usuario.nombre }} {{ usuario.apellido }}</h1>
+
+    <div class="contenedor">
+
+        <!-- ======================== -->
+        <!--       DATOS PERSONALES   -->
+        <!-- ======================== -->
+        <div class="card">
+            <div class="titulo">Datos del estudiante</div>
+            <div class="campo"><strong>Nombre:</strong> {{ usuario.nombre }}</div>
+            <div class="campo"><strong>Apellido:</strong> {{ usuario.apellido }}</div>
+            <div class="campo"><strong>Carrera:</strong> {{ usuario.carrera }}</div>
+        </div>
+
+        <!-- ======================== -->
+        <!--   TEST DE RECONOCIMIENTO -->
+        <!-- ======================== -->
+        {% if test_reconocimiento %}
+        <div class="card">
+            <div class="titulo">Test de Reconocimiento</div>
+            <div class="campo"><strong>Motivo de estudio:</strong> {{ test_reconocimiento.motivo_estudio }}</div>
+            <div class="campo"><strong>Año estudio:</strong> {{ test_reconocimiento.año_estudio }}</div>
+            <div class="campo"><strong>Intereses:</strong> {{ test_reconocimiento.intereses }}</div>
+            <div class="campo"><strong>Malestar:</strong> {{ test_reconocimiento.malestar }}</div>
+            <div class="campo"><strong>Expectativa inicial:</strong> {{ test_reconocimiento.expect_inicial }}</div>
+            <div class="campo"><strong>Razón:</strong> {{ test_reconocimiento.razon }}</div>
+        </div>
+        {% endif %}
+
+        <!-- ======================== -->
+        <!--      SITUACIÓN FAMILIAR -->
+        <!-- ======================== -->
+        {% if situacion_familiar %}
+        <div class="card">
+            <div class="titulo">Situación Familiar</div>
+            <div class="campo"><strong>Estado civil:</strong> {{ situacion_familiar.estado_civil }}</div>
+            <div class="campo"><strong>Convivencia:</strong> {{ situacion_familiar.convivencia }}</div>
+            <div class="campo"><strong>Apoyo familiar:</strong> {{ situacion_familiar.apoyo_familiar }}</div>
+            <div class="campo"><strong>Problema familiar:</strong> {{ situacion_familiar.problema_familiar }}</div>
+            <div class="campo"><strong>Relación familiar:</strong> {{ situacion_familiar.relacion_familiar }}</div>
+        </div>
+        {% endif %}
+
+        <!-- ======================== -->
+        <!--  SEGURIDAD Y AUTOESTIMA -->
+        <!-- ======================== -->
+        {% if autoestima %}
+        <div class="card">
+            <div class="titulo">Seguridad y Autoestima</div>
+            <div class="campo"><strong>Autoestima:</strong> {{ autoestima.autoestima }}</div>
+            <div class="campo"><strong>Inseguridades:</strong> {{ autoestima.inseguiridades }}</div>
+            <div class="campo"><strong>Logros personales:</strong> {{ autoestima.logros_personales }}</div>
+            <div class="campo"><strong>Debilidades:</strong> {{ autoestima.debilidades }}</div>
+            <div class="campo"><strong>Miedos:</strong> {{ autoestima.miedos }}</div>
+            <div class="campo"><strong>Opinión de vida:</strong> {{ autoestima.opinion_vida }}</div>
+            <div class="campo"><strong>Objetivo:</strong> {{ autoestima.objetivo }}</div>
+        </div>
+        {% endif %}
+
+        <!-- ======================== -->
+        <!--        SALUD MENTAL      -->
+        <!-- ======================== -->
+        {% if salud_mental %}
+        <div class="card">
+            <div class="titulo">Salud Mental</div>
+            <div class="campo"><strong>Opinión salud mental:</strong> {{ salud_mental.opinion_salud_mental }}</div>
+            <div class="campo"><strong>Tratamiento psicológico:</strong> {{ salud_mental.tratamiento_psicologico }}</div>
+            <div class="campo"><strong>Estado crítico:</strong> {{ salud_mental.estado_critico }}</div>
+            <div class="campo"><strong>Tendencia crítica:</strong> {{ salud_mental.tendecia_critica }}</div>
+            <div class="campo"><strong>Acciones autoinfligidas:</strong> {{ salud_mental.acciones_autoinflictivas }}</div>
+            <div class="campo"><strong>Autogestión:</strong> {{ salud_mental.autogestion }}</div>
+            <div class="campo"><strong>Autocalificación:</strong> {{ salud_mental.autocalificacion }}</div>
+        </div>
+        {% endif %}
+
+        <!-- ======================== -->
+        <!--        SALUD FÍSICA      -->
+        <!-- ======================== -->
+        {% if salud_fisica %}
+        <div class="card">
+            <div class="titulo">Salud Física</div>
+            <div class="campo"><strong>Salud física:</strong> {{ salud_fisica.salud_fisica }}</div>
+            <div class="campo"><strong>Medicamentos:</strong> {{ salud_fisica.consumo_medicamentos }}</div>
+            <div class="campo"><strong>Alergias:</strong> {{ salud_fisica.alergias }}</div>
+            <div class="campo"><strong>Problemas de visión:</strong> {{ salud_fisica.problemas_vision }}</div>
+            <div class="campo"><strong>Problemas de audición:</strong> {{ salud_fisica.problemas_audicion }}</div>
+            <div class="campo"><strong>Ejercicio:</strong> {{ salud_fisica.ejercicio }}</div>
+            <div class="campo"><strong>Hospitalizaciones / cirugías:</strong> {{ salud_fisica.hospitalizaciones_cirugias }}</div>
+        </div>
+        {% endif %}
+
+    </div>
+        <form action="/medico_vista/" method="get">
+            <button type="submit" class="btn-logout">Volver panel</button>
+        </form>
+
+</body>
+</html>
